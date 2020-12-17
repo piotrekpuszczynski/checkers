@@ -5,11 +5,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Objects;
 
-public class Window extends JFrame {
+public class SelectionWindow extends JFrame {
 
     public JComboBox<String> amountOfPlayers;
 
-    public Window() {
+    public SelectionWindow() {
         super("Selection");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(getToolkit().getScreenSize().width/3, getToolkit().getScreenSize().height/3);
@@ -31,7 +31,7 @@ public class Window extends JFrame {
 
     public void ok(ActionEvent e) {
         setVisible(false);
-        new WindowGame(getAmount());
+        new GameWindow(getAmount());
     }
 
     public int getAmount() {
