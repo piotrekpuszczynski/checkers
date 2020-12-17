@@ -17,5 +17,6 @@ public class GamePanel extends JPanel {
         g.drawLine((getToolkit().getScreenSize().width / 2),
                 (int) ((getToolkit().getScreenSize().height / 2) - (getToolkit().getScreenSize().height * 0.96 / 2)),
                 (getToolkit().getScreenSize().width / 2), (getToolkit().getScreenSize().height / 2));
+
     }
 }
