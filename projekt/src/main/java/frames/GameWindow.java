@@ -6,7 +6,8 @@ public class GameWindow extends JFrame {
     GameWindow(int amount) {
         super("Checkers");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(getToolkit().getScreenSize().width, getToolkit().getScreenSize().height);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+
 
         add(new GamePanel(amount));
 
