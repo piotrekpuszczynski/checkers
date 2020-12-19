@@ -1,11 +1,11 @@
 package layout;
 
-import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class FieldsLayoutFactory extends JPanel {
-    protected List<Field> fields;
+public abstract class FieldsLayoutFactory {
+    protected List<Field> fields = new ArrayList<>();
     protected int playersAmount;
     protected int pawnsAmount;
     protected int diameter;

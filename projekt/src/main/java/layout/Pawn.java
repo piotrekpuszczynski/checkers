@@ -5,8 +5,12 @@ import java.awt.*;
 
 public class Pawn extends JPanel {
 
-    Pawn (Color color, Graphics g) {
-        g.setColor(color);
+    private Color color;
+
+    Pawn (Color color) {
+        this.color = color;
     }
+
+    public Color getColor() { return this.color; }
 
 }

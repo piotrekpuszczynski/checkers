@@ -6,9 +6,8 @@ public class LayoutProducer {
             return new FieldsLayoutStandard(playersAmount, pawnsAmount);
         } else if(choice.equalsIgnoreCase("+1")) {
             return new FieldsLayoutBigger1(playersAmount, pawnsAmount);
-            //} else if(choice.equalsIgnoreCase("Footer")) {
-            //    return new ReportFooterFactory();
-            //}
+        } else if(choice.equalsIgnoreCase("-1")) {
+            return new FieldsLayoutSmaller1(playersAmount, pawnsAmount);
         }
         return null;
     }
