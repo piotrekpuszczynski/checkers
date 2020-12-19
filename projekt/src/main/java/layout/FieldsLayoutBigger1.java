@@ -1,12 +1,8 @@
 package layout;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class FieldsLayoutBigger1 extends FieldsLayoutFactory {
-    public FieldsLayoutBigger1(int playersAmount, int pawnsAmount) {
-        super(playersAmount, pawnsAmount);
-    }
 
     @Override
     public void initializeFields(Graphics g, int windowWidth, int windowHeight) {

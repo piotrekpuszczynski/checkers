@@ -48,8 +48,8 @@ public class SelectionWindow extends JFrame {
         new GameWindow(getPlayersAmount(), getBoardSize(), getPawnsAmount());
     }
 
-    public int getPlayersAmount() {
-        return Integer.parseInt(Objects.requireNonNull(playersAmount.getSelectedItem()).toString());
+    public String getPlayersAmount() {
+        return (String) playersAmount.getSelectedItem();
     }
     public String getBoardSize() {
         return (String) boardSize.getSelectedItem();

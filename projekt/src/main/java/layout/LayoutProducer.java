@@ -1,13 +1,13 @@
 package layout;
 
 public class LayoutProducer {
-    public FieldsLayoutFactory getFactory(String choice, int playersAmount, int pawnsAmount) {
+    public FieldsLayoutFactory getFactory(String choice) {
         if(choice.equalsIgnoreCase("standard")) {
-            return new FieldsLayoutStandard(playersAmount, pawnsAmount);
+            return new FieldsLayoutStandard();
         } else if(choice.equalsIgnoreCase("+1")) {
-            return new FieldsLayoutBigger1(playersAmount, pawnsAmount);
+            return new FieldsLayoutBigger1();
         } else if(choice.equalsIgnoreCase("-1")) {
-            return new FieldsLayoutSmaller1(playersAmount, pawnsAmount);
+            return new FieldsLayoutSmaller1();
         }
         return null;
     }
