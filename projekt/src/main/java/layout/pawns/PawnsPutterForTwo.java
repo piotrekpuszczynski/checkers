@@ -1,4 +1,4 @@
-package layout;
+package layout.pawns;
 
 import java.awt.*;
 

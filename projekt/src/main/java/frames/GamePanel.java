@@ -1,6 +1,10 @@
 package frames;
 
-import layout.*;
+import frames.mouse.MoveAdapter;
+import layout.fields.FieldsLayoutFactory;
+import layout.fields.LayoutProducer;
+import layout.pawns.PawnsPutterFactory;
+import layout.pawns.PawnsPutterProducer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +18,8 @@ public class GamePanel extends JPanel {
 
         pawnsPutter = new PawnsPutterProducer().getPutter(playersAmount);
         pawnsPutter.setFields(fieldsLayout.getFields());
+
+        addMouseListener(new MoveAdapter(fieldsLayout.getFields()));
     }
 
     public void paintComponent(Graphics g) {

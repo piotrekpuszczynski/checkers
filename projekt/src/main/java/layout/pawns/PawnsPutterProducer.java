@@ -1,6 +1,4 @@
-package layout;
-
-import java.util.List;
+package layout.pawns;
 
 public class PawnsPutterProducer {
     public PawnsPutterFactory getPutter(String choice) {

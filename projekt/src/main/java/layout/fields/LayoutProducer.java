@@ -1,4 +1,4 @@
-package layout;
+package layout.fields;
 
 public class LayoutProducer {
     public FieldsLayoutFactory getFactory(String choice) {

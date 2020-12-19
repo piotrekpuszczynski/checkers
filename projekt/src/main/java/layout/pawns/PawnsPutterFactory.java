@@ -1,4 +1,6 @@
-package layout;
+package layout.pawns;
+
+import layout.fields.Field;
 
 import java.awt.*;
 import java.util.List;

@@ -1,4 +1,4 @@
-package layout;
+package layout.fields;
 
 import java.awt.*;
 
