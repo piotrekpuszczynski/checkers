@@ -5,16 +5,15 @@ import java.awt.*;
 import java.util.List;
 
 public abstract class FieldsLayoutFactory extends JPanel {
-    List<Field> fields;
-    int playersAmount;
-    String boardSize;
-    int pawnsAmount;
+    protected List<Field> fields;
+    protected int playersAmount;
+    protected int pawnsAmount;
+    protected int diameter;
 
-    public abstract void initializeFields(Graphics g);
+    public abstract void initializeFields(Graphics g, int windowWidth, int windowHeight);
 
-    FieldsLayoutFactory(int playersAmount, String boardSize, int pawnsAmount) {
+    FieldsLayoutFactory(int playersAmount, int pawnsAmount) {
         this.playersAmount = playersAmount;
-        this.boardSize = boardSize;
         this.pawnsAmount = pawnsAmount;
     }
 }

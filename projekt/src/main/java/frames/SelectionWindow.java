@@ -7,9 +7,9 @@ import java.util.Objects;
 
 public class SelectionWindow extends JFrame {
 
-    public JComboBox<String> playersAmount;
-    public JComboBox<String> boardSize;
-    public JComboBox<String> pawnsAmount;
+    private final JComboBox<String> playersAmount;
+    private final JComboBox<String> boardSize;
+    private final JComboBox<String> pawnsAmount;
 
     public SelectionWindow() {
         super("Selection");
