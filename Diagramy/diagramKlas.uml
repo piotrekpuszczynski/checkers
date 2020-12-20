@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="0.0" y="80.0">layout.fields.FieldsLayoutStandard</node>
+    <node x="0.0" y="310.0">layout.pawns.PawnsPutterProducer</node>
+    <node x="519.0" y="385.0">frames.GamePanel</node>
+    <node x="228.0" y="0.0">layout.fields.FieldsLayoutFactory</node>
+    <node x="228.0" y="80.0">layout.fields.FieldsLayoutSmaller</node>
+    <node x="56.000000000000014" y="155.0">layout.pawns.states.PawnStateBehavior</node>
+    <node x="458.0" y="310.0">layout.fields.LayoutProducer</node>
+    <node x="0.0" y="385.0">frames.mouse.MoveAdapter</node>
+    <node x="133.0" y="460.0">layout.pawns.Pawn</node>
+    <node x="156.0" y="235.0">layout.pawns.states.WaitingState</node>
+    <node x="0.0" y="460.0">layout.fields.Field</node>
+    <node x="245.0" y="310.0">frames.SelectionWindow</node>
+    <node x="181.0" y="385.0">frames.GameWindow</node>
+    <node x="354.0" y="385.0">layout.pawns.states.PawnState</node>
+    <node x="345.0" y="155.0">layout.pawns.PawnsPutterFactory</node>
+    <node x="258.0" y="460.0">Main</node>
+    <node x="0.0" y="235.0">layout.pawns.states.MovingState</node>
+    <node x="349.0" y="235.0">layout.pawns.PawnsPutterForTwo</node>
+    <node x="448.0" y="80.0">layout.fields.FieldsLayoutBigger</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="layout.pawns.PawnsPutterForTwo" target="layout.pawns.PawnsPutterFactory">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="layout.pawns.states.MovingState" target="layout.pawns.states.PawnStateBehavior">
+      <point x="0.0" y="-15.0" />
+      <point x="68.0" y="210.0" />
+      <point x="102.00000000000001" y="210.0" />
+      <point x="-46.0" y="15.0" />
+    </edge>
+    <edge source="layout.pawns.states.WaitingState" target="layout.pawns.states.PawnStateBehavior">
+      <point x="5.6843418860808015E-14" y="-15.0" />
+      <point x="228.00000000000006" y="210.0" />
+      <point x="194.0" y="210.0" />
+      <point x="46.0" y="15.0" />
+    </edge>
+    <edge source="layout.fields.FieldsLayoutSmaller" target="layout.fields.FieldsLayoutFactory">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="layout.fields.FieldsLayoutStandard" target="layout.fields.FieldsLayoutFactory">
+      <point x="0.0" y="-15.0" />
+      <point x="104.0" y="55.0" />
+      <point x="261.33333333333337" y="55.0" />
+      <point x="-66.66666666666663" y="15.0" />
+    </edge>
+    <edge source="layout.fields.FieldsLayoutBigger" target="layout.fields.FieldsLayoutFactory">
+      <point x="0.0" y="-15.0" />
+      <point x="544.0" y="55.0" />
+      <point x="394.66666666666674" y="55.0" />
+      <point x="66.66666666666674" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6000000000000001" x="269.33333333333337" y="532.4999999999999" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
