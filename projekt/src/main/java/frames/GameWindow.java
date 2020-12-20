@@ -8,8 +8,7 @@ public class GameWindow extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-
-        add(new GamePanel(playersAmount, boardSize, pawnsAmount));
+        add(new BoardPanel(playersAmount, boardSize, pawnsAmount));
 
         setVisible(true);
     }

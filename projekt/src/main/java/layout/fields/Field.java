@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class Field {
 
-    private final Graphics g;
+    private Graphics g;
     private final int x;
     private final int y;
     private final int diameter;
@@ -38,12 +38,12 @@ public class Field {
         g.fillOval(x, y, diameter, diameter);
     }
 
-    Field(Graphics g, int x, int y, int diameter) {
-        this.g = g;
+    public void setGraphics(Graphics g) { this.g = g; }
+
+    Field(int x, int y, int diameter) {
         this.x = x;
         this.y = y;
         this.diameter = diameter;
-        drawField();
     }
 
 }

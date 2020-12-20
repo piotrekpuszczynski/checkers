@@ -1,6 +1,7 @@
 package frames;
 
 import frames.mouse.MoveAdapter;
+import layout.fields.Field;
 import layout.fields.FieldsLayoutFactory;
 import layout.fields.LayoutProducer;
 import layout.pawns.PawnsPutterFactory;
@@ -9,12 +10,13 @@ import layout.pawns.PawnsPutterProducer;
 import javax.swing.*;
 import java.awt.*;
 
-public class GamePanel extends JPanel {
+public class BoardPanel extends JPanel {
     private final FieldsLayoutFactory fieldsLayout;
     private final PawnsPutterFactory pawnsPutter;
 
-    GamePanel(String playersAmount, String boardSize, int pawnsAmount) {
+    BoardPanel(String playersAmount, String boardSize, int pawnsAmount) {
         fieldsLayout = new LayoutProducer().getFactory(boardSize);
+        fieldsLayout.initializeFields(getToolkit().getScreenSize().width, getToolkit().getScreenSize().height - 60);
 
         pawnsPutter = new PawnsPutterProducer().getPutter(playersAmount);
         pawnsPutter.setFields(fieldsLayout.getFields());
@@ -24,7 +26,12 @@ public class GamePanel extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        fieldsLayout.initializeFields(g, getWidth(), getHeight());
+        for (Field field:fieldsLayout.getFields()) {
+            field.setGraphics(g);
+            field.drawField();
+        }
+
+        //fieldsLayout.initializeFields(g, getWidth(), getHeight());
         pawnsPutter.putPawns();
     }
 }
