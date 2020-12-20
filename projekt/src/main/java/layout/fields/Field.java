@@ -18,14 +18,10 @@ public class Field {
 
     public void putPawn(Pawn pawn) {
         this.pawn = pawn;
-        g.setColor(pawn.getColor());
-        g.fillOval(x, y, diameter, diameter);
     }
 
     public void removePawn() {
         this.pawn = null;
-        g.setColor(Color.BLACK);
-        g.fillOval(x, y, diameter, diameter);
     }
 
     public Pawn getPawn() {
@@ -38,6 +34,10 @@ public class Field {
         g.fillOval(x, y, diameter, diameter);
     }
 
+    public void drawPawn() {
+        g.setColor(pawn.getColor());
+        g.fillOval(x, y, diameter, diameter);
+    }
     public void setGraphics(Graphics g) { this.g = g; }
 
     Field(int x, int y, int diameter) {

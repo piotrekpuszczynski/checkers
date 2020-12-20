@@ -20,6 +20,7 @@ public class BoardPanel extends JPanel {
 
         pawnsPutter = new PawnsPutterProducer().getPutter(playersAmount);
         pawnsPutter.setFields(fieldsLayout.getFields());
+        pawnsPutter.putPawns();
 
         addMouseListener(new MoveAdapter(fieldsLayout.getFields(), this));
     }
@@ -29,9 +30,9 @@ public class BoardPanel extends JPanel {
         for (Field field:fieldsLayout.getFields()) {
             field.setGraphics(g);
             field.drawField();
+            if (field.getPawn() != null) {
+                field.drawPawn();
+            }
         }
-
-        //fieldsLayout.initializeFields(g, getWidth(), getHeight());
-        pawnsPutter.putPawns();
     }
 }
