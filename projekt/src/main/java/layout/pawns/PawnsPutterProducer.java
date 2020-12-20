@@ -1,6 +1,11 @@
 package layout.pawns;
 
+import layout.fields.Field;
+
+import java.util.List;
+
 public class PawnsPutterProducer {
+
     public PawnsPutterFactory getPutter(String choice) {
         if(choice.equalsIgnoreCase("2")) {
             return new PawnsPutterForTwo();

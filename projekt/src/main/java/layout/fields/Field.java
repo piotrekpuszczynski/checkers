@@ -10,7 +10,7 @@ public class Field {
     private final int x;
     private final int y;
     private final int diameter;
-    Pawn pawn = null;
+    private Pawn pawn;
 
     public boolean clicked(int x, int y) {
         return (x - (this.x + diameter / 2)) * (x - (this.x + diameter / 2)) + (y - (this.y + diameter / 2)) * (y - (this.y + diameter / 2)) <= (diameter/2) * (diameter/2);
@@ -28,7 +28,10 @@ public class Field {
         g.fillOval(x, y, diameter, diameter);
     }
 
-    public Pawn getPawn() { return pawn; }
+    public Pawn getPawn() {
+        if (pawn != null) return pawn;
+        return null;
+    }
 
     public void drawField() {
         g.setColor(Color.BLACK);

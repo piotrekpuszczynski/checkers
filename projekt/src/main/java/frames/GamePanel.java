@@ -19,7 +19,7 @@ public class GamePanel extends JPanel {
         pawnsPutter = new PawnsPutterProducer().getPutter(playersAmount);
         pawnsPutter.setFields(fieldsLayout.getFields());
 
-        addMouseListener(new MoveAdapter(fieldsLayout.getFields()));
+        addMouseListener(new MoveAdapter(fieldsLayout.getFields(), this));
     }
 
     public void paintComponent(Graphics g) {

@@ -2,7 +2,7 @@ package layout.fields;
 
 import java.awt.*;
 
-public class FieldsLayoutBigger1 extends FieldsLayoutFactory {
+public class FieldsLayoutBigger extends FieldsLayoutFactory {
 
     @Override
     public void initializeFields(Graphics g, int windowWidth, int windowHeight) {

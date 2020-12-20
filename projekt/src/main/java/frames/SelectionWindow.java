@@ -23,7 +23,7 @@ public class SelectionWindow extends JFrame {
         add(new JLabel("Select amount of players: "));
         add(playersAmount);
 
-        String[] sizes = {"-1", "standard", "+1"};
+        String[] sizes = {"smaller", "standard", "bigger"};
         boardSize = new JComboBox<>(sizes);
 
         add(new JLabel("Select board size: "));
