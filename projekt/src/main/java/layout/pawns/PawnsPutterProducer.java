@@ -1,7 +1,5 @@
 package layout.pawns;
 
-import layout.pawns.states.PawnsPutterForThree;
-
 public class PawnsPutterProducer {
 
     public PawnsPutterFactory getPutter(String choice) {

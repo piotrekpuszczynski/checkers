@@ -65,7 +65,6 @@ public class ConfigurationWindow extends JFrame {
 
     public void ok(ActionEvent e) {
         setVisible(false);
-        //new GameWindow(getPlayersAmount(), getBoardSize(), getPawnsAmount());
         try {
             new Server().runServer(getPlayersAmount(), getBoardSize(), getPawnsAmount());
         } catch (IOException ioException) {

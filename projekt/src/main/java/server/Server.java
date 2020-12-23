@@ -39,6 +39,9 @@ public class Server {
                 out.println(playersAmount);
                 out.println(boardSize);
                 out.println(pawnsAmount);
+                while(in.hasNext()) {
+                    System.out.println(in.nextLine());
+                }
 
             } catch (Exception e) {
                 System.out.println("Error:" + socket);

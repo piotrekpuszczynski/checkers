@@ -1,6 +1,4 @@
-package layout.pawns.states;
-
-import layout.pawns.PawnsPutterFactory;
+package layout.pawns;
 
 import java.awt.*;
 
