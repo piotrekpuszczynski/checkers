@@ -1,17 +1,21 @@
 package frames;
 
+import server.Server;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.Objects;
 
-public class SelectionWindow extends JFrame {
+public class ConfigurationWindow extends JFrame {
 
     private final JComboBox<String> playersAmount;
     private final JComboBox<String> boardSize;
     private final JComboBox<String> pawnsAmount;
+    private String[] pawns;
 
-    public SelectionWindow() {
+    public ConfigurationWindow() {
         super("Selection");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(getToolkit().getScreenSize().width/3, getToolkit().getScreenSize().height/3);
@@ -25,11 +29,12 @@ public class SelectionWindow extends JFrame {
 
         String[] sizes = {"smaller", "standard", "bigger"};
         boardSize = new JComboBox<>(sizes);
+        boardSize.addActionListener((this::changePawnsChoice));
 
         add(new JLabel("Select board size: "));
         add(boardSize);
 
-        String[] pawns = {"0", "-1", "-2"};
+        pawns = new String[]{"6", "3", "1"};
         pawnsAmount = new JComboBox<>(pawns);
 
         add(new JLabel("Select amount of pawns: "));
@@ -39,13 +44,33 @@ public class SelectionWindow extends JFrame {
         ok.addActionListener(this::ok);
         add(ok);
 
-        setVisible(true);
         setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    public void changePawnsChoice(ActionEvent e) {
+        switch ((String) Objects.requireNonNull(boardSize.getSelectedItem())) {
+            case "smaller":
+                pawns = new String[]{"6", "3", "1"};
+                break;
+            case "standard":
+                pawns = new String[]{"10", "6", "3", "1"};
+                break;
+            case "bigger":
+                pawns = new String[]{"15", "10", "6", "3", "1"};
+                break;
+        }
+        pawnsAmount.setModel(new DefaultComboBoxModel<>(pawns));
     }
 
     public void ok(ActionEvent e) {
         setVisible(false);
-        new GameWindow(getPlayersAmount(), getBoardSize(), getPawnsAmount());
+        //new GameWindow(getPlayersAmount(), getBoardSize(), getPawnsAmount());
+        try {
+            new Server().runServer(getPlayersAmount(), getBoardSize(), getPawnsAmount());
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
     }
 
     public String getPlayersAmount() {

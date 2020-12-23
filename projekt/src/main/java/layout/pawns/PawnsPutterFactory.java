@@ -17,5 +17,5 @@ public abstract class PawnsPutterFactory {
         return new Pawn(color, PawnState.WAITING);
     }
 
-    public abstract void putPawns();
+    public abstract void putPawns(int pawnsAmount);
 }

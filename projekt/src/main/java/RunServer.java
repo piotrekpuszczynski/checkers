@@ -1,7 +1,7 @@
 import frames.*;
 
-public class Main {
+public class RunServer {
     public static void main(String[] args) {
-        new SelectionWindow();
+        new ConfigurationWindow();
     }
 }
