@@ -1,5 +1,6 @@
 package server;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -15,8 +16,8 @@ public class Server {
             var pool = Executors.newFixedThreadPool(200);
             while (true) {
                 Game game = new Game();
-                pool.execute(game.new Player(listener.accept(), playersAmount, boardSize, pawnsAmount, '0'));
-                pool.execute(game.new Player(listener.accept(), playersAmount, boardSize, pawnsAmount, '1'));
+                pool.execute(game.new Player(listener.accept(), playersAmount, boardSize, pawnsAmount, Color.RED));
+                pool.execute(game.new Player(listener.accept(), playersAmount, boardSize, pawnsAmount, Color.GREEN));
             }
         }
     }
@@ -41,14 +42,14 @@ public class Server {
             Scanner in;
             PrintWriter out;
             Player opponent;
-            char mark;
+            Color color;
 
-            Player(Socket socket, String playersAmount, String boardSize, int pawnsAmount, char mark) {
+            Player(Socket socket, String playersAmount, String boardSize, int pawnsAmount, Color color) {
                 this.socket = socket;
                 this.playersAmount = playersAmount;
                 this.boardSize = boardSize;
                 this.pawnsAmount = pawnsAmount;
-                this.mark = mark;
+                this.color = color;
             }
 
             @Override
@@ -78,7 +79,10 @@ public class Server {
                 out.println(playersAmount);
                 out.println(boardSize);
                 out.println(pawnsAmount);
-                if (mark == '0') {
+                out.println(color.getRed());
+                out.println(color.getGreen());
+                out.println(color.getBlue());
+                if (color.equals(Color.RED)) {
                     currentPlayer = this;
                     out.println("MESSAGE Waiting for opponent to connect");
                 } else {

@@ -2,8 +2,10 @@ package server;
 
 import frames.GameWindow;
 import frames.mouse.MoveAdapter;
+import layout.pawns.Pawn;
 
-import java.awt.event.MouseAdapter;
+import javax.swing.*;
+import java.awt.*;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -13,6 +15,7 @@ public class Client {
     PrintWriter out;
     Socket socket;
     MoveAdapter mouse;
+    Color color;
 
     public Client(String serverAddress) throws Exception {
 
@@ -23,10 +26,14 @@ public class Client {
         String playersAmount = in.nextLine();
         String boardSize = in.nextLine();
         int pawnsAmount = Integer.parseInt(in.nextLine());
+        color = new Color(Integer.parseInt(in.nextLine()), Integer.parseInt(in.nextLine()), Integer.parseInt(in.nextLine()));
+        System.out.println(color);
 
         new GameWindow(playersAmount, boardSize, pawnsAmount, this);
         play();
     }
+
+    public Color getColor() { return this.color; }
 
     public void send(String data) {
         out.println(data);
@@ -35,6 +42,7 @@ public class Client {
     public void setMouse(MoveAdapter mouse) { this.mouse = mouse; }
 
     public void play() throws Exception {
+        Pawn pawn = null;
         try {
             var response = in.nextLine();
             //var mark = response.charAt(8);
@@ -43,10 +51,11 @@ public class Client {
                 response = in.nextLine();
                 System.out.println(response);
                 if (response.startsWith("REMOVE")) {
+                    pawn = mouse.getField(Integer.parseInt(response.split(" ")[1])).getPawn();
                     mouse.getField(Integer.parseInt(response.split(" ")[1])).removePawn();
                     mouse.panel.repaint();
                 } else if (response.startsWith("PUT")) {
-                    mouse.getField(Integer.parseInt(response.split(" ")[1])).putPawn(mouse.pawn);
+                    mouse.getField(Integer.parseInt(response.split(" ")[1])).putPawn(pawn);
                     mouse.panel.repaint();
                 //} else if (response.startsWith("MESSAGE")) {
                 //    messageLabel.setText(response.substring(8));

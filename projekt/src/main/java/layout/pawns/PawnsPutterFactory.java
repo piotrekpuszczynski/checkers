@@ -1,7 +1,6 @@
 package layout.pawns;
 
 import layout.fields.Field;
-import layout.pawns.states.PawnState;
 
 import java.awt.*;
 import java.util.List;
@@ -14,7 +13,7 @@ public abstract class PawnsPutterFactory {
     }
 
     public Pawn putNewPawn(Color color) {
-        return new Pawn(color, PawnState.WAITING);
+        return new Pawn(color);
     }
 
     public abstract void putPawns(int pawnsAmount);
