@@ -1,7 +1,9 @@
 package server;
 
 import frames.GameWindow;
+import frames.mouse.MoveAdapter;
 
+import java.awt.event.MouseAdapter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -9,11 +11,12 @@ import java.util.Scanner;
 public class Client {
     Scanner in;
     PrintWriter out;
+    Socket socket;
+    MoveAdapter mouse;
 
     public Client(String serverAddress) throws Exception {
 
-        Socket socket = new Socket(serverAddress, 58989);
-        Scanner s = new Scanner(System.in);
+        socket = new Socket(serverAddress, 58989);
         in = new Scanner(socket.getInputStream());
         out = new PrintWriter(socket.getOutputStream(), true);
 
@@ -22,9 +25,50 @@ public class Client {
         int pawnsAmount = Integer.parseInt(in.nextLine());
 
         new GameWindow(playersAmount, boardSize, pawnsAmount, this);
+        play();
     }
 
     public void send(String data) {
         out.println(data);
+    }
+
+    public void setMouse(MoveAdapter mouse) { this.mouse = mouse; }
+
+    public void play() throws Exception {
+        try {
+            var response = in.nextLine();
+            //var mark = response.charAt(8);
+            //var opponentMark = mark == '0' ? '1' : '0';
+            while (in.hasNextLine()) {
+                response = in.nextLine();
+                System.out.println(response);
+                if (response.startsWith("REMOVE")) {
+                    mouse.getField(Integer.parseInt(response.split(" ")[1])).removePawn();
+                    mouse.panel.repaint();
+                } else if (response.startsWith("PUT")) {
+                    mouse.getField(Integer.parseInt(response.split(" ")[1])).putPawn(mouse.pawn);
+                    mouse.panel.repaint();
+                //} else if (response.startsWith("MESSAGE")) {
+                //    messageLabel.setText(response.substring(8));
+                //} else if (response.startsWith("VICTORY")) {
+                //    JOptionPane.showMessageDialog(frame, "Winner Winner");
+                //    break;
+                //} else if (response.startsWith("DEFEAT")) {
+                //    JOptionPane.showMessageDialog(frame, "Sorry you lost");
+                //    break;
+                //} else if (response.startsWith("TIE")) {
+                //    JOptionPane.showMessageDialog(frame, "Tie");
+                //    break;
+                //} else if (response.startsWith("OTHER_PLAYER_LEFT")) {
+                //    JOptionPane.showMessageDialog(frame, "Other player left");
+                //    break;
+                }
+            }
+            out.println("QUIT");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            socket.close();
+        }
     }
 }

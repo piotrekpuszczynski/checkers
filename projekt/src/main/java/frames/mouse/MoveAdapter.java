@@ -12,15 +12,18 @@ import java.util.List;
 
 public class MoveAdapter extends MouseAdapter {
     private final List<Field> fields;
-    Pawn pawn;
-    private final JPanel panel;
+    public Pawn pawn;
+    public final JPanel panel;
     private final Client client;
 
     public MoveAdapter(List<Field> fields, JPanel panel, Client client) {
         this.fields = fields;
         this.panel = panel;
         this.client = client;
+        this.client.setMouse(this);
     }
+
+    public Field getField(int i) { return fields.get(i); }
 
     private int getFieldIndex(Field field) {
         for (int i = 0; i < fields.size(); i++) {
@@ -39,7 +42,7 @@ public class MoveAdapter extends MouseAdapter {
                             System.out.println("clicked " + pawn.getPawnState().getState());
                             pawn.changePawnState();
                             field.putPawn(pawn);
-                            pawn = null;
+                            //pawn = null;
                             client.send("PUT " + getFieldIndex(field));
                         }
                     }
