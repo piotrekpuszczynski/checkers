@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class GameWindow extends JFrame {
-    private JLabel state;
+    private final JLabel state;
     public GameWindow(String playersAmount, String boardSize, int pawnsAmount, Client client) {
         super("Checkers");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -20,9 +20,12 @@ public class GameWindow extends JFrame {
         JMenuItem skipMove = new JMenuItem("skip move");
         skipMove.addActionListener(this::skipMove);
         menuBar.add(skipMove);
+        JMenuItem color = new JMenuItem("Your pawn's color");
+        color.setBackground(client.getColor());
+        menuBar.add(color);
         setJMenuBar(menuBar);
 
-        state = new JLabel("...");
+        state = new JLabel("MESSAGE Waiting for opponent to move");
         getContentPane().add(state, BorderLayout.SOUTH);
 
         add(new BoardPanel(playersAmount, boardSize, pawnsAmount, client));
