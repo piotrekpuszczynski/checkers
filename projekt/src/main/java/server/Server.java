@@ -97,12 +97,14 @@ public class Server {
                     var command = in.nextLine();
                     if (command.startsWith("QUIT")) {
                         return;
-                    } else if (command.startsWith("MOVE")) {
-                        //processCommand(Integer.parseInt(command.substring(5)));
                     } else if (command.startsWith("REMOVE")) {
                         opponent.out.println(command);
                     } else if (command.startsWith("PUT")) {
                         opponent.out.println(command);
+                        opponent.out.println("MESSAGE Your move");
+                        currentPlayer.out.println("MESSAGE Waiting for opponent to move");
+                        currentPlayer = currentPlayer.opponent;
+                    } else if (command.startsWith("MESSAGE")) {
                         opponent.out.println("MESSAGE Your move");
                         currentPlayer.out.println("MESSAGE Waiting for opponent to move");
                         currentPlayer = currentPlayer.opponent;

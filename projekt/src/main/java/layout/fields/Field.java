@@ -11,6 +11,7 @@ public class Field {
     private final int y;
     private final int diameter;
     private Pawn pawn;
+    private boolean ifAvailable = false;
 
     public boolean clicked(int x, int y) {
         return (x - (this.x + diameter / 2)) * (x - (this.x + diameter / 2)) + (y - (this.y + diameter / 2)) * (y - (this.y + diameter / 2)) <= (diameter/2) * (diameter/2);
@@ -38,6 +39,22 @@ public class Field {
         g.setColor(pawn.getColor());
         g.fillOval(x, y, diameter, diameter);
     }
+
+    public void setAvailabilityTrue() {
+        if (this.pawn == null) this.ifAvailable = true;
+    }
+
+    public void setAvailabilityFalse() {
+        this.ifAvailable = false;
+    }
+
+    public boolean getAvailability() { return this.ifAvailable; }
+
+    public void showAvailableField() {
+        g.setColor(Color.GRAY);
+        g.fillOval(x, y, diameter, diameter);
+    }
+
     public void setGraphics(Graphics g) { this.g = g; }
 
     Field(int x, int y, int diameter) {

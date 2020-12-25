@@ -29,10 +29,11 @@ public class BoardPanel extends JPanel {
         super.paintComponent(g);
         for (Field field:fieldsLayout.getFields()) {
             field.setGraphics(g);
-            field.drawField();
             if (field.getPawn() != null) {
                 field.drawPawn();
-            }
+            } else if (field.getAvailability()) {
+                field.showAvailableField();
+            } else field.drawField();
         }
     }
 }
