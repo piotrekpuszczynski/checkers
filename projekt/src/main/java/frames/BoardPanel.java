@@ -16,7 +16,7 @@ public class BoardPanel extends JPanel {
 
     BoardPanel(String playersAmount, String boardSize, int pawnsAmount, Client client) {
         fieldsLayout = new LayoutProducer().getFactory(boardSize);
-        fieldsLayout.initializeFields(getToolkit().getScreenSize().width, getToolkit().getScreenSize().height - 60);
+        fieldsLayout.initializeFields(getToolkit().getScreenSize().width, getToolkit().getScreenSize().height - 100);
 
         PawnsPutterFactory pawnsPutter = new PawnsPutterProducer().getPutter(playersAmount);
         pawnsPutter.setFields(fieldsLayout.getFields());

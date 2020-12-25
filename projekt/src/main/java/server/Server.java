@@ -42,7 +42,7 @@ public class Server {
             Scanner in;
             PrintWriter out;
             Player opponent;
-            Color color;
+            private final Color color;
 
             Player(Socket socket, String playersAmount, String boardSize, int pawnsAmount, Color color) {
                 this.socket = socket;
@@ -84,7 +84,7 @@ public class Server {
                 out.println(color.getBlue());
                 if (color.equals(Color.RED)) {
                     currentPlayer = this;
-                    out.println("MESSAGE Waiting for opponent to connect");
+                    currentPlayer.out.println("MESSAGE Waiting for opponent to connect");
                 } else {
                     opponent = currentPlayer;
                     opponent.opponent = this;
@@ -98,11 +98,14 @@ public class Server {
                     if (command.startsWith("QUIT")) {
                         return;
                     } else if (command.startsWith("MOVE")) {
-                        processCommand(Integer.parseInt(command.substring(5)));
+                        //processCommand(Integer.parseInt(command.substring(5)));
                     } else if (command.startsWith("REMOVE")) {
                         opponent.out.println(command);
                     } else if (command.startsWith("PUT")) {
                         opponent.out.println(command);
+                        opponent.out.println("MESSAGE Your move");
+                        currentPlayer.out.println("MESSAGE Waiting for opponent to move");
+                        currentPlayer = currentPlayer.opponent;
                     }
                 }
             }

@@ -42,19 +42,17 @@ public class MoveAdapter extends MouseAdapter {
                             System.out.println("clicked " + pawn.getPawnState().getState());
                             pawn.changePawnState();
                             field.putPawn(pawn);
-                            //pawn = null;
+                            pawn = null;
                             client.send("PUT " + getFieldIndex(field));
                         }
                     }
                     else System.out.println("null");
-                } else if (field.getPawn().getPawnState().getState().equals(PawnState.WAITING)) {
-                    if (field.getPawn().getAccess(client.getColor())) {
-                        System.out.println("clicked " + field.getPawn().getPawnState().getState());
-                        pawn = field.getPawn();
-                        field.removePawn();
-                        pawn.changePawnState();
-                        client.send("REMOVE " + getFieldIndex(field));
-                    }
+                } else if (field.getPawn().getPawnState().getState().equals(PawnState.WAITING) && field.getPawn().getAccess(client.getColor()) && client.getTurn()) {
+                    System.out.println("clicked " + field.getPawn().getPawnState().getState());
+                    pawn = field.getPawn();
+                    field.removePawn();
+                    pawn.changePawnState();
+                    client.send("REMOVE " + getFieldIndex(field));
                 }
 
                 panel.repaint();

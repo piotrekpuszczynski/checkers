@@ -4,7 +4,6 @@ import frames.GameWindow;
 import frames.mouse.MoveAdapter;
 import layout.pawns.Pawn;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -16,6 +15,9 @@ public class Client {
     Socket socket;
     MoveAdapter mouse;
     Color color;
+    GameWindow gameWindow;
+    private boolean turn = false;
+
 
     public Client(String serverAddress) throws Exception {
 
@@ -27,28 +29,24 @@ public class Client {
         String boardSize = in.nextLine();
         int pawnsAmount = Integer.parseInt(in.nextLine());
         color = new Color(Integer.parseInt(in.nextLine()), Integer.parseInt(in.nextLine()), Integer.parseInt(in.nextLine()));
-        System.out.println(color);
 
-        new GameWindow(playersAmount, boardSize, pawnsAmount, this);
+        gameWindow = new GameWindow(playersAmount, boardSize, pawnsAmount, this);
         play();
     }
 
     public Color getColor() { return this.color; }
 
-    public void send(String data) {
-        out.println(data);
-    }
+    public void send(String data) { out.println(data); }
 
     public void setMouse(MoveAdapter mouse) { this.mouse = mouse; }
+
+    public boolean getTurn() { return this.turn; }
 
     public void play() throws Exception {
         Pawn pawn = null;
         try {
-            var response = in.nextLine();
-            //var mark = response.charAt(8);
-            //var opponentMark = mark == '0' ? '1' : '0';
             while (in.hasNextLine()) {
-                response = in.nextLine();
+                String response = in.nextLine();
                 System.out.println(response);
                 if (response.startsWith("REMOVE")) {
                     pawn = mouse.getField(Integer.parseInt(response.split(" ")[1])).getPawn();
@@ -57,8 +55,11 @@ public class Client {
                 } else if (response.startsWith("PUT")) {
                     mouse.getField(Integer.parseInt(response.split(" ")[1])).putPawn(pawn);
                     mouse.panel.repaint();
-                //} else if (response.startsWith("MESSAGE")) {
-                //    messageLabel.setText(response.substring(8));
+                    //gameWindow.changeState(in.nextLine());
+                } else if (response.startsWith("MESSAGE")) {
+                    gameWindow.changeState(response);
+                    if (response.split(" ")[1].equals("Your")) turn = true;
+                    else if (response.split(" ")[1].equals("Waiting")) turn = false;
                 //} else if (response.startsWith("VICTORY")) {
                 //    JOptionPane.showMessageDialog(frame, "Winner Winner");
                 //    break;
