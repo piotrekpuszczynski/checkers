@@ -33,7 +33,7 @@ public class Server {
             private final int pawnsAmount;
             Scanner in;
             PrintWriter out;
-            Player opponent;
+            private Player opponent;
             private final Color color;
 
             Player(Socket socket, String playersAmount, String boardSize, int pawnsAmount, Color color) {

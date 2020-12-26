@@ -22,7 +22,7 @@ public class GameWindow extends JFrame {
         JMenuItem skipMove = new JMenuItem("skip move");
         skipMove.addActionListener(this::skipMove);
         menuBar.add(skipMove);
-        JMenuItem color = new JMenuItem("Your pawn's color");
+        JMenuItem color = new JMenuItem("Your pawns' color");
         color.setBackground(client.getColor());
         menuBar.add(color);
         setJMenuBar(menuBar);
