@@ -25,15 +25,7 @@ public class Server {
     static class Game {
         Player currentPlayer;
 
-        public synchronized void move(int location, Player player) {
-            if (player != currentPlayer) {
-                throw new IllegalStateException("Not your turn");
-            } else if (player.opponent == null) {
-                throw new IllegalStateException("You don't have an opponent yet");
-            }
-            currentPlayer = currentPlayer.opponent;
-        }
-
+        //TODO for more than two players
         private class Player implements Runnable {
             private final Socket socket;
             private final String playersAmount;
@@ -109,23 +101,6 @@ public class Server {
                         currentPlayer.out.println("MESSAGE Waiting for opponent to move");
                         currentPlayer = currentPlayer.opponent;
                     }
-                }
-            }
-
-            private void processCommand(int location) {
-                try {
-                    move(location, this);
-                    out.println("VALID_MOVE");
-                    opponent.out.println("OPPONENT_MOVED " + location);
-                    //if (hasWinner()) {
-                    //    output.println("VICTORY");
-                    //    opponent.output.println("DEFEAT");
-                    //} else if (boardFilledUp()) {
-                    //    output.println("TIE");
-                    //    opponent.output.println("TIE");
-                    //}
-                } catch (IllegalStateException e) {
-                    out.println("MESSAGE " + e.getMessage());
                 }
             }
         }

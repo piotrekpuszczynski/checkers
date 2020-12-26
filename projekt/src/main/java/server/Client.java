@@ -60,18 +60,6 @@ public class Client {
                     gameWindow.changeState(response);
                     if (response.split(" ")[1].equals("Your")) turn = true;
                     else if (response.split(" ")[1].equals("Waiting")) turn = false;
-                //} else if (response.startsWith("VICTORY")) {
-                //    JOptionPane.showMessageDialog(frame, "Winner Winner");
-                //    break;
-                //} else if (response.startsWith("DEFEAT")) {
-                //    JOptionPane.showMessageDialog(frame, "Sorry you lost");
-                //    break;
-                //} else if (response.startsWith("TIE")) {
-                //    JOptionPane.showMessageDialog(frame, "Tie");
-                //    break;
-                //} else if (response.startsWith("OTHER_PLAYER_LEFT")) {
-                //    JOptionPane.showMessageDialog(frame, "Other player left");
-                //    break;
                 }
             }
             out.println("QUIT");
