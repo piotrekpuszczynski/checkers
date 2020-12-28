@@ -8,6 +8,11 @@ import java.util.List;
 public abstract class PawnsPutterFactory {
     protected List<Field> fields;
 
+    int firstX;
+    int firstY;
+    int diameter;
+    int counter, gap, x, y, o;
+
     public void setFields(List<Field> fields) {
         this.fields = fields;
     }
@@ -18,6 +23,40 @@ public abstract class PawnsPutterFactory {
 
     public abstract void putPawns(int pawnsAmount);
 
+    private void checkFields(int x, int y, Color color) {
+        for (Field field: fields) {
+            if (field.getX() >= x - 1 && field.getX() <= x + 1 && field.getY() == y) field.putPawn(putNewPawn(color));
+        }
+    }
+
+    private void initializeData(Field field) {
+        firstX = field.getX();
+        firstY = field.getY();
+        diameter = field.getDiameter();
+        counter = 0;
+        gap = 0;
+        x = firstX;
+        y = firstY;
+    }
+
+    private void incrementData() {
+        if (0 == counter) {
+            gap++;
+            counter = gap;
+        } else {
+            counter--;
+        }
+    }
+
+    private void calculateWidthInFields() {
+        o = 0;
+        int k = (fields.size() - 1) / 12;
+        while (k > 0) {
+            o++;
+            k -= o;
+        }
+    }
+
     public void putUpper(Color color, int pawnsAmount) {
         for (int i = 0; i < pawnsAmount; i++) fields.get(i).putPawn(putNewPawn(color));
     }
@@ -27,22 +66,14 @@ public abstract class PawnsPutterFactory {
     }
 
     public void putRightLower(Color color, int pawnsAmount) {
-        int firstX = fields.get(11 * (fields.size() - 1) / 12).getX();
-        int firstY = fields.get(11 * (fields.size() - 1) / 12).getY();
-        int diameter = fields.get(11 * (fields.size() - 1) / 12).getDiameter();
-        int counter = 0, gap = 0, x = firstX, y = firstY;
+
+        initializeData(fields.get(11 * (fields.size() - 1) / 12));
+
         for (int i = 0; i < pawnsAmount; i++) {
 
-            for (Field field: fields) {
-                if (field.getX() >= x - 2 && field.getX() <= x + 2 && field.getY() == y) field.putPawn(putNewPawn(color));
-            }
+            checkFields(x, y, color);
 
-            if (0 == counter) {
-                gap++;
-                counter = gap;
-            } else {
-                counter--;
-            }
+            incrementData();
 
             x = firstX - (2 * gap - counter) * diameter / 2;
             y = firstY - diameter * counter;
@@ -50,22 +81,14 @@ public abstract class PawnsPutterFactory {
     }
 
     public void putLeftUpper(Color color, int pawnsAmount) {
-        int firstX = fields.get((fields.size() - 1) / 12).getX();
-        int firstY = fields.get((fields.size() - 1) / 12).getY();
-        int diameter = fields.get((fields.size() - 1) / 12).getDiameter();
-        int counter = 0, gap = 0, x = firstX, y = firstY;
+
+        initializeData(fields.get((fields.size() - 1) / 12));
+
         for (int i = 0; i < pawnsAmount; i++) {
 
-            for (Field field: fields) {
-                if (field.getX() >= x - 2 && field.getX() <= x + 2 && field.getY() == y) field.putPawn(putNewPawn(color));
-            }
+            checkFields(x, y, color);
 
-            if (0 == counter) {
-                gap++;
-                counter = gap;
-            } else {
-                counter--;
-            }
+            incrementData();
 
             x = firstX + (2 * gap - counter) * diameter / 2;
             y = firstY + diameter * counter;
@@ -74,30 +97,15 @@ public abstract class PawnsPutterFactory {
 
     public void putRightUpper(Color color, int pawnsAmount) {
 
-        int o = 0;
-        int k = (fields.size() - 1) / 12;
-        while(k > 0) {
-            o++;
-            k -= o;
-        }
+        calculateWidthInFields();
 
-        int firstX = fields.get((fields.size() - 1) / 12 + (3 * o)).getX();
-        int firstY = fields.get((fields.size() - 1) / 12 + (3 * o)).getY();
-        int diameter = fields.get((fields.size() - 1) / 12 + (3 * o)).getDiameter();
-        int counter = 0, gap = 0, x = firstX, y = firstY;
+        initializeData(fields.get((fields.size() - 1) / 12 + (3 * o)));
 
         for (int i = 0; i < pawnsAmount; i++) {
 
-            for (Field field: fields) {
-                if (field.getX() >= x - 2 && field.getX() <= x + 2 && field.getY() == y) field.putPawn(putNewPawn(color));
-            }
+            checkFields(x, y, color);
 
-            if (0 == counter) {
-                gap++;
-                counter = gap;
-            } else {
-                counter--;
-            }
+            incrementData();
 
             x = firstX - (2 * gap - counter) * diameter / 2;
             y = firstY + diameter * counter;
@@ -106,30 +114,15 @@ public abstract class PawnsPutterFactory {
 
     public void putLeftLower(Color color, int pawnsAmount) {
 
-        int o = 0;
-        int k = (fields.size() - 1) / 12;
-        while(k > 0) {
-            o++;
-            k -= o;
-        }
+        calculateWidthInFields();
 
-        int firstX = fields.get((11 * (fields.size() - 1) / 12) - (3 * o)).getX();
-        int firstY = fields.get((11 * (fields.size() - 1) / 12) - (3 * o)).getY();
-        int diameter = fields.get((11 * (fields.size() - 1) / 12) - (3 * o)).getDiameter();
-        int counter = 0, gap = 0, x = firstX, y = firstY;
+        initializeData(fields.get((11 * (fields.size() - 1) / 12) - (3 * o)));
 
         for (int i = 0; i < pawnsAmount; i++) {
 
-            for (Field field: fields) {
-                if (field.getX() >= x - 2 && field.getX() <= x + 2 && field.getY() == y) field.putPawn(putNewPawn(color));
-            }
+            checkFields(x, y, color);
 
-            if (0 == counter) {
-                gap++;
-                counter = gap;
-            } else {
-                counter--;
-            }
+            incrementData();
 
             x = firstX + (2 * gap - counter) * diameter / 2;
             y = firstY - diameter * counter;
