@@ -13,6 +13,10 @@ public class Field {
     private Pawn pawn;
     private boolean ifAvailable = false;
 
+    public int getX() { return this.x; }
+    public int getY() { return this.y; }
+    public int getDiameter() { return this.diameter; }
+
     public boolean clicked(int x, int y) {
         return (x - (this.x + diameter / 2)) * (x - (this.x + diameter / 2)) + (y - (this.y + diameter / 2)) * (y - (this.y + diameter / 2)) <= (diameter/2) * (diameter/2);
     }
