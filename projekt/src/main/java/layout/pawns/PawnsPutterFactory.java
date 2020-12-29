@@ -6,7 +6,7 @@ import java.awt.*;
 import java.util.List;
 
 public abstract class PawnsPutterFactory {
-    protected List<Field> fields;
+    private List<Field> fields;
 
     int firstX;
     int firstY;

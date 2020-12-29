@@ -23,4 +23,5 @@ public class Pawn extends JPanel {
     public PawnStateBehavior getPawnState() { return this.pawnState; }
     public void changePawnState() { this.pawnState = pawnState.changeState(); }
 
+    public PawnState getMovingState() { return PawnState.MOVING.getStateBehavior().getState(); }
 }

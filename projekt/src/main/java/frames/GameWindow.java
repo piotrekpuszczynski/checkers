@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 public class GameWindow extends JFrame {
     private final JLabel state;
     private final Client client;
+    private final BoardPanel board;
     public GameWindow(String playersAmount, String boardSize, int pawnsAmount, Client client) {
         super("Checkers");
         this.client = client;
@@ -30,10 +31,15 @@ public class GameWindow extends JFrame {
         state = new JLabel("MESSAGE Waiting for opponent to move");
         getContentPane().add(state, BorderLayout.SOUTH);
 
-        add(new BoardPanel(playersAmount, boardSize, pawnsAmount, client));
+        board = new BoardPanel(playersAmount, boardSize, pawnsAmount, this);
+        add(board);
 
         setVisible(true);
     }
+
+    public Client getClient() { return this.client; }
+
+    public BoardPanel getBoard() { return this.board; }
 
     public void changeState(String string) { this.state.setText(string); }
 

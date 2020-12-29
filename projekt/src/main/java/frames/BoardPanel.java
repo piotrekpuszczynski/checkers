@@ -5,15 +5,20 @@ import layout.fields.FieldsLayoutFactory;
 import layout.fields.LayoutProducer;
 import layout.pawns.PawnsPutterFactory;
 import layout.pawns.PawnsPutterProducer;
-import server.Client;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class BoardPanel extends JPanel {
     private final FieldsLayoutFactory fieldsLayout;
+    private final GameWindow gameWindow;
+    private final MoveAdapter mouse;
 
-    BoardPanel(String playersAmount, String boardSize, int pawnsAmount, Client client) {
+    public GameWindow getGameWindow() { return this.gameWindow; }
+    public MoveAdapter getMouse() { return this.mouse; }
+
+    BoardPanel(String playersAmount, String boardSize, int pawnsAmount, GameWindow gameWindow) {
+        this.gameWindow = gameWindow;
         fieldsLayout = new LayoutProducer().getFactory(boardSize);
         fieldsLayout.initializeFields(getToolkit().getScreenSize().width, getToolkit().getScreenSize().height - 100);
 
@@ -21,7 +26,8 @@ public class BoardPanel extends JPanel {
         pawnsPutter.setFields(fieldsLayout.getFields());
         pawnsPutter.putPawns(pawnsAmount);
 
-        addMouseListener(new MoveAdapter(fieldsLayout.getFields(), this, client));
+        mouse = new MoveAdapter(fieldsLayout.getFields(), this);
+        addMouseListener(mouse);
     }
 
     public void paintComponent(Graphics g) {

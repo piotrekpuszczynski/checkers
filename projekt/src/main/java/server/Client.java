@@ -1,7 +1,6 @@
 package server;
 
 import frames.GameWindow;
-import frames.mouse.MoveAdapter;
 import layout.pawns.Pawn;
 
 import java.awt.*;
@@ -13,11 +12,9 @@ public class Client {
     Scanner in;
     PrintWriter out;
     Socket socket;
-    MoveAdapter mouse;
     Color color;
     GameWindow gameWindow;
     private boolean turn = false;
-
 
     public Client(String serverAddress) throws Exception {
 
@@ -38,8 +35,6 @@ public class Client {
 
     public void send(String data) { out.println(data); }
 
-    public void setMouse(MoveAdapter mouse) { this.mouse = mouse; }
-
     public boolean getTurn() { return this.turn; }
 
     public void play() throws Exception {
@@ -49,10 +44,10 @@ public class Client {
                 String response = in.nextLine();
                 System.out.println(response);
                 if (response.startsWith("REMOVE")) {
-                    pawn = mouse.getField(Integer.parseInt(response.split(" ")[1])).getPawn();
-                    mouse.getField(Integer.parseInt(response.split(" ")[1])).removePawn();
+                    pawn = gameWindow.getBoard().getMouse().getField(Integer.parseInt(response.split(" ")[1])).getPawn();
+                    gameWindow.getBoard().getMouse().getField(Integer.parseInt(response.split(" ")[1])).removePawn();
                 } else if (response.startsWith("PUT")) {
-                    mouse.getField(Integer.parseInt(response.split(" ")[1])).putPawn(pawn);
+                    gameWindow.getBoard().getMouse().getField(Integer.parseInt(response.split(" ")[1])).putPawn(pawn);
                     pawn = null;
                 } else if (response.startsWith("MESSAGE")) {
                     gameWindow.changeState(response);
@@ -62,7 +57,7 @@ public class Client {
                     //for (Field fields: mouse.get)
                 }
 
-                mouse.panel.repaint();
+                gameWindow.getBoard().getMouse().panel.repaint();
             }
             out.println("QUIT");
         } catch (Exception e) {
