@@ -85,15 +85,40 @@ public class Server {
             }
 
             private void processCommands() {
+                int lastX = 0, lastY = 0, x, y;
                 while (in.hasNextLine()) {
-                    var command = in.nextLine();
+                    String command = in.nextLine();
                     if (command.startsWith("QUIT")) {
                         return;
                     } else if (command.startsWith("REMOVE")) {
                         opponent.out.println(command);
-                        int x = Integer.parseInt(command.split(" ")[2]) - (Integer.parseInt(command.split(" ")[4]) / 2);
-                        int y = Integer.parseInt(command.split(" ")[3]) - Integer.parseInt(command.split(" ")[4]);
+                        lastX = Integer.parseInt(command.split(" ")[2]);
+                        lastY = Integer.parseInt(command.split(" ")[3]);
+
+                        x = lastX - (Integer.parseInt(command.split(" ")[4]) / 2);
+                        y = lastY - Integer.parseInt(command.split(" ")[4]);
                         currentPlayer.out.println("SHOW " + x + " " + y);
+
+                        x = lastX + (Integer.parseInt(command.split(" ")[4]) / 2);
+                        y = lastY - Integer.parseInt(command.split(" ")[4]);
+                        currentPlayer.out.println("SHOW " + x + " " + y);
+
+                        x = lastX + Integer.parseInt(command.split(" ")[4]);
+                        y = lastY;
+                        currentPlayer.out.println("SHOW " + x + " " + y);
+
+                        x = lastX + (Integer.parseInt(command.split(" ")[4]) / 2);
+                        y = lastY + Integer.parseInt(command.split(" ")[4]);
+                        currentPlayer.out.println("SHOW " + x + " " + y);
+
+                        x = lastX - (Integer.parseInt(command.split(" ")[4]) / 2);
+                        y = lastY + Integer.parseInt(command.split(" ")[4]);
+                        currentPlayer.out.println("SHOW " + x + " " + y);
+
+                        x = lastX - Integer.parseInt(command.split(" ")[4]);
+                        y = lastY;
+                        currentPlayer.out.println("SHOW " + x + " " + y);
+
                     } else if (command.startsWith("PUT")) {
                         opponent.out.println(command);
                         opponent.out.println("MESSAGE Your move");
@@ -103,6 +128,11 @@ public class Server {
                         opponent.out.println("MESSAGE Your move");
                         currentPlayer.out.println("MESSAGE Waiting for opponent to move");
                         currentPlayer = currentPlayer.opponent;
+                    } else if (command.startsWith("SHOWNEXT")) {
+                        opponent.out.println(command);
+                        int currentX = lastX + 2 * (Integer.parseInt(command.split(" ")[1]) - lastX);
+                        int currentY = lastY + 2 * (Integer.parseInt(command.split(" ")[2]) - lastY);
+                        currentPlayer.out.println("SHOWNEXT " + currentX + " " + currentY);
                     }
                 }
             }

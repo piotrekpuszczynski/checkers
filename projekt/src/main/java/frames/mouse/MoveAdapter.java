@@ -18,6 +18,9 @@ public class MoveAdapter extends MouseAdapter {
         this.panel = panel;
     }
 
+    public void setPawn(Pawn pawn) { this.pawn = pawn; }
+    public Pawn getPawn() { return this.pawn; }
+
     public Field getField(int i) { return fields.get(i); }
 
     private int getFieldIndex(Field field) {
@@ -25,11 +28,6 @@ public class MoveAdapter extends MouseAdapter {
             if (field.equals(fields.get(i))) return i;
         }
         return 0;
-    }
-
-    private void showAvailableFields(Field field) {
-        getField(getFieldIndex(field) - 1).setAvailabilityTrue();
-        getField(getFieldIndex(field) + 1).setAvailabilityTrue();
     }
 
     private void resetAvailability() {
@@ -42,11 +40,11 @@ public class MoveAdapter extends MouseAdapter {
             if (field.clicked(e.getX(), e.getY())) {
                 if (field.getPawn() == null) {
                     if (pawn != null) {
-                        if (pawn.getPawnState().getState().equals(pawn.getMovingState())) {//&& field.getAvailability()
+                        if (pawn.getPawnState().getState().equals(pawn.getMovingState()) ) {//&& field.getAvailability()
                             pawn.changePawnState();
                             field.putPawn(pawn);
                             pawn = null;
-                            //resetAvailability();
+                            resetAvailability();
                             panel.getGameWindow().getClient().send("PUT " + getFieldIndex(field));
                         }
                     }
@@ -54,7 +52,6 @@ public class MoveAdapter extends MouseAdapter {
                     pawn = field.getPawn();
                     field.removePawn();
                     pawn.changePawnState();
-                    //showAvailableFields(field);
                     panel.getGameWindow().getClient().send("REMOVE " + getFieldIndex(field) + " " + field.getX() + " " + field.getY() + " " + field.getDiameter());
                 }
 
