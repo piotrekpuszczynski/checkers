@@ -35,6 +35,7 @@ public class Server {
             PrintWriter out;
             private Player opponent;
             private final Color color;
+            int startX = 0, startY = 0, x, y, lastX, lastY;
 
             Player(Socket socket, String playersAmount, String boardSize, int pawnsAmount, Color color) {
                 this.socket = socket;
@@ -85,39 +86,16 @@ public class Server {
             }
 
             private void processCommands() {
-                int lastX = 0, lastY = 0, x, y;
                 while (in.hasNextLine()) {
                     String command = in.nextLine();
                     if (command.startsWith("QUIT")) {
                         return;
                     } else if (command.startsWith("REMOVE")) {
                         opponent.out.println(command);
-                        lastX = Integer.parseInt(command.split(" ")[2]);
-                        lastY = Integer.parseInt(command.split(" ")[3]);
+                        startX = Integer.parseInt(command.split(" ")[2]);
+                        startY = Integer.parseInt(command.split(" ")[3]);
 
-                        x = lastX - (Integer.parseInt(command.split(" ")[4]) / 2);
-                        y = lastY - Integer.parseInt(command.split(" ")[4]);
-                        currentPlayer.out.println("SHOW " + x + " " + y);
-
-                        x = lastX + (Integer.parseInt(command.split(" ")[4]) / 2);
-                        y = lastY - Integer.parseInt(command.split(" ")[4]);
-                        currentPlayer.out.println("SHOW " + x + " " + y);
-
-                        x = lastX + Integer.parseInt(command.split(" ")[4]);
-                        y = lastY;
-                        currentPlayer.out.println("SHOW " + x + " " + y);
-
-                        x = lastX + (Integer.parseInt(command.split(" ")[4]) / 2);
-                        y = lastY + Integer.parseInt(command.split(" ")[4]);
-                        currentPlayer.out.println("SHOW " + x + " " + y);
-
-                        x = lastX - (Integer.parseInt(command.split(" ")[4]) / 2);
-                        y = lastY + Integer.parseInt(command.split(" ")[4]);
-                        currentPlayer.out.println("SHOW " + x + " " + y);
-
-                        x = lastX - Integer.parseInt(command.split(" ")[4]);
-                        y = lastY;
-                        currentPlayer.out.println("SHOW " + x + " " + y);
+                        sendAvailableFields(Integer.parseInt(command.split(" ")[4]));
 
                     } else if (command.startsWith("PUT")) {
                         opponent.out.println(command);
@@ -128,13 +106,40 @@ public class Server {
                         opponent.out.println("MESSAGE Your move");
                         currentPlayer.out.println("MESSAGE Waiting for opponent to move");
                         currentPlayer = currentPlayer.opponent;
-                    } else if (command.startsWith("SHOWNEXT")) {
+                    } else if (command.startsWith("NEXT")) {
                         opponent.out.println(command);
-                        int currentX = lastX + 2 * (Integer.parseInt(command.split(" ")[1]) - lastX);
-                        int currentY = lastY + 2 * (Integer.parseInt(command.split(" ")[2]) - lastY);
-                        currentPlayer.out.println("SHOWNEXT " + currentX + " " + currentY);
+                        lastX = startX + 2 * (Integer.parseInt(command.split(" ")[1]) - startX);
+                        lastY = startY + 2 * (Integer.parseInt(command.split(" ")[2]) - startY);
+                        currentPlayer.out.println("NEXT " + lastX + " " + lastY);
                     }
                 }
+            }
+
+            public void sendAvailableFields(int diameter) {
+
+                x = startX - (diameter / 2);
+                y = startY - diameter;
+                currentPlayer.out.println("SHOW " + x + " " + y);
+
+                x = startX + (diameter / 2);
+                y = startY - diameter;
+                currentPlayer.out.println("SHOW " + x + " " + y);
+
+                x = startX + diameter;
+                y = startY;
+                currentPlayer.out.println("SHOW " + x + " " + y);
+
+                x = startX + (diameter / 2);
+                y = startY + diameter;
+                currentPlayer.out.println("SHOW " + x + " " + y);
+
+                x = startX - (diameter / 2);
+                y = startY + diameter;
+                currentPlayer.out.println("SHOW " + x + " " + y);
+
+                x = startX - diameter;
+                y = startY;
+                currentPlayer.out.println("SHOW " + x + " " + y);
             }
         }
     }

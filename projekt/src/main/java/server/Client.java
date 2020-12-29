@@ -58,11 +58,11 @@ public class Client {
                                 gameWindow.getBoard().getAllFields().get(i).getY() == Integer.parseInt(response.split(" ")[2])) {
                             gameWindow.getBoard().getAllFields().get(i).setAvailabilityTrue();
                             if (gameWindow.getBoard().getAllFields().get(i).getPawn() != null) {
-                                send("SHOWNEXT " + gameWindow.getBoard().getAllFields().get(i).getX() + " " + gameWindow.getBoard().getAllFields().get(i).getY());
+                                send("NEXT " + gameWindow.getBoard().getAllFields().get(i).getX() + " " + gameWindow.getBoard().getAllFields().get(i).getY());
                             }
                         }
                     }
-                } else if (response.startsWith("SHOWNEXT")) {
+                } else if (response.startsWith("NEXT")) {
                     for (int i = 0; i < gameWindow.getBoard().getAllFields().size(); i++) {
                         if (gameWindow.getBoard().getAllFields().get(i).getX() <= Integer.parseInt(response.split(" ")[1]) + 1 &&
                                 gameWindow.getBoard().getAllFields().get(i).getX() >= Integer.parseInt(response.split(" ")[1]) - 1 &&
