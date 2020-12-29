@@ -51,16 +51,18 @@ public class Client {
                 if (response.startsWith("REMOVE")) {
                     pawn = mouse.getField(Integer.parseInt(response.split(" ")[1])).getPawn();
                     mouse.getField(Integer.parseInt(response.split(" ")[1])).removePawn();
-                    mouse.panel.repaint();
                 } else if (response.startsWith("PUT")) {
                     mouse.getField(Integer.parseInt(response.split(" ")[1])).putPawn(pawn);
-                    mouse.panel.repaint();
-                    //gameWindow.changeState(in.nextLine());
+                    pawn = null;
                 } else if (response.startsWith("MESSAGE")) {
                     gameWindow.changeState(response);
                     if (response.split(" ")[1].equals("Your")) turn = true;
                     else if (response.split(" ")[1].equals("Waiting")) turn = false;
+                } else if (response.startsWith("SHOW")) {
+                    //for (Field fields: mouse.get)
                 }
+
+                mouse.panel.repaint();
             }
             out.println("QUIT");
         } catch (Exception e) {

@@ -37,7 +37,7 @@ public class GameWindow extends JFrame {
 
     public void changeState(String string) { this.state.setText(string); }
 
-    public void skipMove(ActionEvent e) {client.send("MESSAGE Your");}
+    public void skipMove(ActionEvent e) { client.send("MESSAGE Your move");}
     public void exit(ActionEvent e) { System.exit(0); }
 
 }

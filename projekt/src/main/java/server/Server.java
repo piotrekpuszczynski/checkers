@@ -91,6 +91,9 @@ public class Server {
                         return;
                     } else if (command.startsWith("REMOVE")) {
                         opponent.out.println(command);
+                        int x = Integer.parseInt(command.split(" ")[2]) - (Integer.parseInt(command.split(" ")[4]) / 2);
+                        int y = Integer.parseInt(command.split(" ")[3]) - Integer.parseInt(command.split(" ")[4]);
+                        currentPlayer.out.println("SHOW " + x + " " + y);
                     } else if (command.startsWith("PUT")) {
                         opponent.out.println(command);
                         opponent.out.println("MESSAGE Your move");

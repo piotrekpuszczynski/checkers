@@ -1,7 +1,6 @@
 package frames;
 
 import frames.mouse.MoveAdapter;
-import layout.fields.Field;
 import layout.fields.FieldsLayoutFactory;
 import layout.fields.LayoutProducer;
 import layout.pawns.PawnsPutterFactory;
@@ -27,13 +26,6 @@ public class BoardPanel extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for (Field field:fieldsLayout.getFields()) {
-            field.setGraphics(g);
-            if (field.getPawn() != null) {
-                field.drawPawn();
-            } else if (field.getAvailability()) {
-                field.showAvailableField();
-            } else field.drawField();
-        }
+        fieldsLayout.repaintFields(g);
     }
 }

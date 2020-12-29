@@ -22,4 +22,15 @@ public abstract class FieldsLayoutFactory {
     }
 
     public List<Field> getFields() { return this.fields; }
+
+    public void repaintFields(Graphics g) {
+        for (Field field: fields) {
+            field.setGraphics(g);
+            if (field.getPawn() != null) {
+                field.drawPawn();
+            } else if (field.getAvailability()) {
+                field.showAvailableField();
+            } else field.drawField();
+        }
+    }
 }
