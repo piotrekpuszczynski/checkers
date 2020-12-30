@@ -6,8 +6,8 @@ public class PawnsPutterForThree extends PawnsPutterFactory {
     @Override
     public void putPawns(int pawnsAmount) {
 
-        putUpper(Color.GREEN, pawnsAmount);
-        putRightLower(Color.RED, pawnsAmount);
-        putLeftLower(Color.BLUE, pawnsAmount);
+        putUpper(Color.BLUE, pawnsAmount);
+        putRightLower(Color.GREEN, pawnsAmount);
+        putLeftLower(Color.RED, pawnsAmount);
     }
 }

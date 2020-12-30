@@ -42,6 +42,8 @@ public class Field {
     public void drawPawn() {
         g.setColor(pawn.getColor());
         g.fillOval(x, y, diameter, diameter);
+        g.setColor(Color.BLACK);
+        g.drawOval(x, y, diameter, diameter);
     }
 
     public void setAvailabilityTrue() {

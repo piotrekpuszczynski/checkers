@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 
@@ -15,17 +17,34 @@ public class Server {
             System.out.println("Server is Running...");
             var pool = Executors.newFixedThreadPool(200);
             while (true) {
-                Game game = new Game();
-                pool.execute(game.new Player(listener.accept(), playersAmount, boardSize, pawnsAmount, Color.RED));
-                pool.execute(game.new Player(listener.accept(), playersAmount, boardSize, pawnsAmount, Color.GREEN));
+                Game game = new Game(new Random().nextInt(Integer.parseInt(playersAmount)));
+                switch (playersAmount) {
+                    case "6":
+                        pool.execute(game.new Player(listener.accept(), playersAmount, boardSize, pawnsAmount, Color.MAGENTA));
+                        pool.execute(game.new Player(listener.accept(), playersAmount, boardSize, pawnsAmount, Color.CYAN));
+                    case "4":
+                        pool.execute(game.new Player(listener.accept(), playersAmount, boardSize, pawnsAmount, Color.YELLOW));
+                    case "3":
+                        pool.execute(game.new Player(listener.accept(), playersAmount, boardSize, pawnsAmount, Color.BLUE));
+                    case "2":
+                        pool.execute(game.new Player(listener.accept(), playersAmount, boardSize, pawnsAmount, Color.GREEN));
+                        pool.execute(game.new Player(listener.accept(), playersAmount, boardSize, pawnsAmount, Color.RED));
+                }
             }
         }
     }
 
     static class Game {
         Player currentPlayer;
+        ArrayList<Player> opponents = new ArrayList<>();
+        ArrayList<Player> tempOpponents = new ArrayList<>();
+        final int random;
+        boolean flag = false;
 
-        //TODO for more than two players
+        Game(int random) {
+            this.random = random;
+        }
+
         private class Player implements Runnable {
             private final Socket socket;
             private final String playersAmount;
@@ -33,8 +52,8 @@ public class Server {
             private final int pawnsAmount;
             Scanner in;
             PrintWriter out;
-            private Player opponent;
             private final Color color;
+            private final Color[] colors = {Color.GREEN, Color.RED, Color.BLUE, Color.YELLOW, Color.CYAN, Color.MAGENTA};
             int startX = 0, startY = 0, x, y, lastX, lastY;
 
             Player(Socket socket, String playersAmount, String boardSize, int pawnsAmount, Color color) {
@@ -54,9 +73,9 @@ public class Server {
                 } catch (Exception e) {
                     System.out.println("Error:" + socket);
                 } finally {
-                    if (opponent != null && opponent.out != null) {
-                        opponent.out.println("OTHER PLAYER LEFT");
-                    }
+                    //if (opponent != null && opponent.out != null) {
+                    //    opponents.get(0).out.println("OTHER PLAYER LEFT");
+                    //}
                     try {
                         socket.close();
                     } catch (IOException e) {
@@ -75,13 +94,21 @@ public class Server {
                 out.println(color.getRed());
                 out.println(color.getGreen());
                 out.println(color.getBlue());
-                if (color.equals(Color.RED)) {
+
+                if (color.equals(colors[random])) {
                     currentPlayer = this;
-                    currentPlayer.out.println("MESSAGE Waiting for opponent to connect");
-                } else {
-                    opponent = currentPlayer;
-                    opponent.opponent = this;
-                    opponent.out.println("MESSAGE Your move");
+                    flag = true;
+                }
+                else if (flag) opponents.add(this);
+                else tempOpponents.add(this);
+
+                if (opponents.size() + tempOpponents.size() == Integer.parseInt(playersAmount) - 1 && currentPlayer != null) {
+                    opponents.addAll(tempOpponents);
+                    currentPlayer.out.println("MESSAGE Your move");
+                }
+                else {
+                    for (Player o: opponents) o.out.println("MESSAGE Waiting for opponents to connect");
+                    if (currentPlayer != null) currentPlayer.out.println("MESSAGE Waiting for opponents to connect");
                 }
             }
 
@@ -91,23 +118,27 @@ public class Server {
                     if (command.startsWith("QUIT")) {
                         return;
                     } else if (command.startsWith("REMOVE")) {
-                        opponent.out.println(command);
+                        for (Player o: opponents) o.out.println(command);
                         startX = Integer.parseInt(command.split(" ")[2]);
                         startY = Integer.parseInt(command.split(" ")[3]);
 
                         sendAvailableFields(Integer.parseInt(command.split(" ")[4]));
 
                     } else if (command.startsWith("PUT")) {
-                        opponent.out.println(command);
-                        opponent.out.println("MESSAGE Your move");
+                        for (Player o: opponents) o.out.println(command);
                         currentPlayer.out.println("MESSAGE Waiting for opponent to move");
-                        currentPlayer = currentPlayer.opponent;
+                        opponents.add(currentPlayer);
+                        currentPlayer = opponents.get(0);
+                        opponents.remove(0);
+                        currentPlayer.out.println("MESSAGE Your move");
                     } else if (command.startsWith("MESSAGE")) {
-                        opponent.out.println("MESSAGE Your move");
                         currentPlayer.out.println("MESSAGE Waiting for opponent to move");
-                        currentPlayer = currentPlayer.opponent;
+                        opponents.add(currentPlayer);
+                        currentPlayer = opponents.get(0);
+                        opponents.remove(0);
+                        currentPlayer.out.println("MESSAGE Your move");
                     } else if (command.startsWith("NEXT")) {
-                        opponent.out.println(command);
+                        for (Player o: opponents) o.out.println(command);
                         lastX = startX + 2 * (Integer.parseInt(command.split(" ")[1]) - startX);
                         lastY = startY + 2 * (Integer.parseInt(command.split(" ")[2]) - startY);
                         currentPlayer.out.println("NEXT " + lastX + " " + lastY);

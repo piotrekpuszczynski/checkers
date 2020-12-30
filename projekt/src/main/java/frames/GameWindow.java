@@ -28,7 +28,7 @@ public class GameWindow extends JFrame {
         menuBar.add(color);
         setJMenuBar(menuBar);
 
-        state = new JLabel("MESSAGE Waiting for opponent to move");
+        state = new JLabel("MESSAGE Waiting for opponents");
         getContentPane().add(state, BorderLayout.SOUTH);
 
         board = new BoardPanel(playersAmount, boardSize, pawnsAmount, this);
@@ -43,7 +43,17 @@ public class GameWindow extends JFrame {
 
     public void changeState(String string) { this.state.setText(string); }
 
-    public void skipMove(ActionEvent e) { client.send("MESSAGE Your move");}
+    public void skipMove(ActionEvent e) {
+        if (board.getMouse().getPawn() != null) {
+            board.getMouse().getLastField().putPawn(board.getMouse().getPawn());
+            board.getMouse().getPawn().changePawnState();
+            board.getMouse().setPawn(null);
+            board.getMouse().resetAvailability();
+            client.send("PUT " + board.getMouse().getFieldIndex(board.getMouse().getLastField()));
+        } else {
+            client.send("MESSAGE Your move");
+        }
+    }
     public void exit(ActionEvent e) { System.exit(0); }
 
 }
