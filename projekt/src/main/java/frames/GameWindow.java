@@ -10,6 +10,14 @@ public class GameWindow extends JFrame {
     private final JLabel state;
     private final Client client;
     private final BoardPanel board;
+
+    /**
+     * ustawia zawartosc okna gry
+     * @param playersAmount liczba graczy
+     * @param boardSize wielksoc planszy
+     * @param pawnsAmount liczba pionkow
+     * @param client klient
+     */
     public GameWindow(String playersAmount, String boardSize, int pawnsAmount, Client client) {
         super("Checkers");
         this.client = client;
@@ -37,23 +45,41 @@ public class GameWindow extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * @return zwraca klienta
+     */
     public Client getClient() { return this.client; }
 
+    /**
+     * @return zwraca panel
+     */
     public BoardPanel getBoard() { return this.board; }
 
+    /**
+     * @param string zmienia stan dla klienta
+     */
     public void changeState(String string) { this.state.setText(string); }
 
+    /**
+     * @param e pomijanie ruchu
+     */
     public void skipMove(ActionEvent e) {
-        if (board.getMouse().getPawn() != null) {
-            board.getMouse().getLastField().putPawn(board.getMouse().getPawn());
-            board.getMouse().getPawn().changePawnState();
-            board.getMouse().setPawn(null);
-            board.getMouse().resetAvailability();
-            client.send("PUT " + board.getMouse().getFieldIndex(board.getMouse().getLastField()));
-        } else {
-            client.send("MESSAGE Your move");
+        if (client.getTurn()) {
+            if (board.getMouse().getPawn() != null) {
+                board.getMouse().getLastField().putPawn(board.getMouse().getPawn());
+                board.getMouse().getPawn().changePawnState();
+                board.getMouse().setPawn(null);
+                board.getMouse().resetAvailability();
+                client.send("PUT " + board.getMouse().getFieldIndex(board.getMouse().getLastField()));
+            } else {
+                client.send("MESSAGE Your move");
+            }
         }
     }
+
+    /**
+     * @param e wyjscie
+     */
     public void exit(ActionEvent e) { System.exit(0); }
 
 }

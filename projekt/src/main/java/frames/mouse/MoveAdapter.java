@@ -8,26 +8,54 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+/**
+ * klasa reprezentujaca myszke
+ */
 public class MoveAdapter extends MouseAdapter {
     private final List<Field> fields;
     private Field lastField;
     private Pawn pawn;
     public BoardPanel panel;
 
+    /**
+     * @param fields pola
+     * @param panel panel
+     */
     public MoveAdapter(List<Field> fields, BoardPanel panel) {
         this.fields = fields;
         this.panel = panel;
     }
 
+    /**
+     * @param field ustawia ostatne wybrane pole
+     */
     public void setLastField(Field field) { this.lastField = field; }
 
+    /**
+     * @return zwraca ostatnie wybrane pole
+     */
     public Field getLastField() { return lastField; }
 
+    /**
+     * @param pawn ustawia pionek na polu
+     */
     public void setPawn(Pawn pawn) { this.pawn = pawn; }
+
+    /**
+     * @return zwraca podniesiony pionek
+     */
     public Pawn getPawn() { return this.pawn; }
 
+    /**
+     * @param i indeks pola z listy
+     * @return pole na indeksie i
+     */
     public Field getField(int i) { return fields.get(i); }
 
+    /**
+     * @param field pole
+     * @return zwraca indeks na ktorym jest podane pole
+     */
     public int getFieldIndex(Field field) {
         for (int i = 0; i < fields.size(); i++) {
             if (field.equals(fields.get(i))) return i;
@@ -35,16 +63,22 @@ public class MoveAdapter extends MouseAdapter {
         return 0;
     }
 
+    /**
+     * resetuje wszystkie pola na fals dla mozliwosci ruchu
+     */
     public void resetAvailability() {
         for (Field field: fields) field.setAvailabilityFalse();
     }
 
+    /**
+     * @param e klikniecie myszki
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         for (Field field: fields) {
             if (field.clicked(e.getX(), e.getY())) {
                 if (field.getPawn() == null) {
-                    if (pawn != null && pawn.getPawnState().getState().equals(pawn.getMovingState()) && field.getAvailability()) {
+                    if (pawn != null && pawn.getPawnState().getState().equals(pawn.getMovingState())) {// && field.getAvailability()
                         pawn.changePawnState();
                         field.putPawn(pawn);
                         pawn = null;

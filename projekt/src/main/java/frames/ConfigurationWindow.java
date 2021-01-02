@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * okno do ustawienia parametrow
+ */
 public class ConfigurationWindow extends JFrame {
 
     private final JComboBox<String> playersAmount;
@@ -15,6 +18,9 @@ public class ConfigurationWindow extends JFrame {
     private final JComboBox<String> pawnsAmount;
     private String[] pawns;
 
+    /**
+     * dodaje zawartosc do okna
+     */
     public ConfigurationWindow() {
         super("Selection");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,6 +54,9 @@ public class ConfigurationWindow extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * @param e zmienia liczby pionkow do wyboru w zaleznosci od rozmiaru planszy
+     */
     public void changePawnsChoice(ActionEvent e) {
         switch ((String) Objects.requireNonNull(boardSize.getSelectedItem())) {
             case "smaller":
@@ -63,6 +72,9 @@ public class ConfigurationWindow extends JFrame {
         pawnsAmount.setModel(new DefaultComboBoxModel<>(pawns));
     }
 
+    /**
+     * @param e potwierdzenie wybranych danych
+     */
     public void ok(ActionEvent e) {
         setVisible(false);
         try {
@@ -72,12 +84,23 @@ public class ConfigurationWindow extends JFrame {
         }
     }
 
+    /**
+     * @return zwraca wybtana liczbe graczy
+     */
     public String getPlayersAmount() {
         return (String) playersAmount.getSelectedItem();
     }
+
+    /**
+     * @return zwraca wybtrana wielkosc planszy
+     */
     public String getBoardSize() {
         return (String) boardSize.getSelectedItem();
     }
+
+    /**
+     * @return zwraca wybrana liczbe pionkow
+     */
     public int getPawnsAmount() {
         return Integer.parseInt(Objects.requireNonNull(pawnsAmount.getSelectedItem()).toString());
     }

@@ -1,7 +1,8 @@
 package layout.fields;
 
-import java.awt.*;
-
+/**
+ * klasa reprezentujaca standardowa plansze
+ */
 public class FieldsLayoutStandard extends FieldsLayoutFactory {
 
     @Override

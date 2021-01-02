@@ -1,7 +1,8 @@
 package layout.fields;
 
-import java.awt.*;
-
+/**
+ * klasa reprezentujaca wieksza plansze
+ */
 public class FieldsLayoutBigger extends FieldsLayoutFactory {
 
     @Override

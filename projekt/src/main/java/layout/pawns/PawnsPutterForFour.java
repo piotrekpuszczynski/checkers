@@ -2,6 +2,9 @@ package layout.pawns;
 
 import java.awt.*;
 
+/**
+ * klasa ukladajaca pionki dla czterech osob
+ */
 public class PawnsPutterForFour extends PawnsPutterFactory {
     @Override
     public void putPawns(int pawnsAmount) {

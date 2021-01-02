@@ -1,7 +1,8 @@
 package layout.fields;
 
-import java.awt.*;
-
+/**
+ * klasa reprezentujaca mniejsza plansze
+ */
 public class FieldsLayoutSmaller extends FieldsLayoutFactory {
 
     @Override

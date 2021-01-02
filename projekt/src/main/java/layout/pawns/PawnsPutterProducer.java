@@ -1,7 +1,14 @@
 package layout.pawns;
 
+/**
+ * klasa tworzaca odpowiednie rozszezenie factory do stawiania pionkow
+ */
 public class PawnsPutterProducer {
 
+    /**
+     * @param choice wybor
+     * @return klasa stawiajaca odpowiednia ilosc pionkow
+     */
     public PawnsPutterFactory getPutter(String choice) {
         if(choice.equalsIgnoreCase("2")) {
             return new PawnsPutterForTwo();
