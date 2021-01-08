@@ -28,7 +28,7 @@ public class GameWindow extends JFrame {
         JMenuItem exit = new JMenuItem("exit");
         exit.addActionListener(this::exit);
         menuBar.add(exit);
-        JMenuItem skipMove = new JMenuItem("skip move");
+        JMenuItem skipMove = new JMenuItem("skip move / confirm move");
         skipMove.addActionListener(this::skipMove);
         menuBar.add(skipMove);
         JMenuItem color = new JMenuItem("Your pawns' color");
@@ -72,8 +72,10 @@ public class GameWindow extends JFrame {
                 board.getMouse().resetAvailability();
                 client.send("PUT " + board.getMouse().getFieldIndex(board.getMouse().getLastField()));
             } else {
+                board.getMouse().resetAvailability();
                 client.send("MESSAGE Your move");
             }
+            board.getMouse().nextMove = false;
         }
     }
 

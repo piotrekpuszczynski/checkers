@@ -99,14 +99,12 @@ public class Client {
                                 gameWindow.getBoard().getAllFields().get(i).getX() >= Integer.parseInt(response.split(" ")[1]) - 1 &&
                                 gameWindow.getBoard().getAllFields().get(i).getY() == Integer.parseInt(response.split(" ")[2])) {
                             gameWindow.getBoard().getAllFields().get(i).setAvailabilityTrue();
-                            //if (gameWindow.getBoard().getAllFields().get(i).getAvailability()) {
-                            //    send("CHECK "+ gameWindow.getBoard().getAllFields().get(i).getX() + " " + gameWindow.getBoard().getAllFields().get(i).getY()
-                            //            + " " + gameWindow.getBoard().getAllFields().get(i).getDiameter());
-                            //}
                         }
                     }
-                }
 
+                } else if (response.startsWith("MOVESTATUS")) {
+                    gameWindow.getBoard().getMouse().nextMove = true;
+                }
                 gameWindow.getBoard().getMouse().panel.repaint();
             }
             out.println("QUIT");

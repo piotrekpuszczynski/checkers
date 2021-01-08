@@ -10,6 +10,8 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 
+import static java.lang.StrictMath.abs;
+
 /**
  * klasa serwera
  */
@@ -24,7 +26,7 @@ public class Server {
     public void runServer(String playersAmount, String boardSize, int pawnsAmount) throws IOException {
         try (var listener = new ServerSocket(58989)) {
             System.out.println("Server is Running...");
-            var pool = Executors.newFixedThreadPool(200);
+            var pool = Executors.newFixedThreadPool(Integer.parseInt(playersAmount));
             while (true) {
                 Game game = new Game(new Random().nextInt(Integer.parseInt(playersAmount)));
                 switch (playersAmount) {
@@ -157,15 +159,27 @@ public class Server {
                         startX = Integer.parseInt(command.split(" ")[2]);
                         startY = Integer.parseInt(command.split(" ")[3]);
 
-                        sendAvailableFields(Integer.parseInt(command.split(" ")[4]), "SHOW");
+                        if (command.split(" ")[5].equals("false")) sendAvailableFields(Integer.parseInt(command.split(" ")[4]), "SHOW");
                     } else if (command.startsWith("PUT")) {
                         for (Player o: opponents) o.out.println(command);
-                        currentPlayer.out.println("MESSAGE Waiting for opponent to move");
-                        opponents.add(currentPlayer);
-                        currentPlayer = opponents.get(0);
-                        opponents.remove(0);
-                        currentPlayer.out.println("MESSAGE Your move");
 
+                        if ((abs((Integer.parseInt(command.split(" ")[3]) - startY)) >= 2 * Integer.parseInt(command.split(" ")[4]) - 1
+                                && abs((Integer.parseInt(command.split(" ")[3]) - startY)) <= 2 * Integer.parseInt(command.split(" ")[4]) + 1)
+                                || ((abs((Integer.parseInt(command.split(" ")[2]) - startX)) <= 2 * Integer.parseInt(command.split(" ")[4]) + 1)
+                                && abs((Integer.parseInt(command.split(" ")[2]) - startX)) >= 2 * Integer.parseInt(command.split(" ")[4]) - 1)) {
+
+                            startX = Integer.parseInt(command.split(" ")[2]);
+                            startY = Integer.parseInt(command.split(" ")[3]);
+
+                            currentPlayer.out.println("MOVESTATUS");
+                            sendAvailableFields(Integer.parseInt(command.split(" ")[4]), "CHECK");
+                        } else {
+                            currentPlayer.out.println("MESSAGE Waiting for opponent to move");
+                            opponents.add(currentPlayer);
+                            currentPlayer = opponents.get(0);
+                            opponents.remove(0);
+                            currentPlayer.out.println("MESSAGE Your move");
+                        }
                     } else if (command.startsWith("MESSAGE")) {
                         currentPlayer.out.println("MESSAGE Waiting for opponent to move");
                         opponents.add(currentPlayer);

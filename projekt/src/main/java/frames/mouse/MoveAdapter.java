@@ -14,8 +14,9 @@ import java.util.List;
 public class MoveAdapter extends MouseAdapter {
     private final List<Field> fields;
     private Field lastField;
-    private Pawn pawn;
+    private Pawn pawn, lastPawn;
     public BoardPanel panel;
+    public boolean nextMove = false;
 
     /**
      * @param fields pola
@@ -77,21 +78,30 @@ public class MoveAdapter extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
         for (Field field: fields) {
             if (field.clicked(e.getX(), e.getY())) {
-                if (field.getPawn() == null) {
-                    if (pawn != null && pawn.getPawnState().getState().equals(pawn.getMovingState())) {// && field.getAvailability()
+                if (nextMove && field.getAvailability()) {
+                    field.putPawn(lastPawn);
+                    lastField.removePawn();
+                    panel.getGameWindow().getClient().send("REMOVE " + getFieldIndex(lastField) + " " + lastField.getX() + " " + lastField.getY() + " " + lastField.getDiameter() + " " + nextMove);
+                    setLastField(field);
+                    panel.getGameWindow().getClient().send("PUT " + getFieldIndex(field) + " " + field.getX() + " " + field.getY() + " " + field.getDiameter());
+                    resetAvailability();
+                    //nextMove = false;
+                } else if (field.getPawn() == null) {
+                    if (pawn != null && pawn.getPawnState().getState().equals(pawn.getMovingState()) && field.getAvailability()) {
                         pawn.changePawnState();
                         field.putPawn(pawn);
+                        lastPawn = pawn;
                         pawn = null;
-                        setLastField(null);
+                        setLastField(field);
                         resetAvailability();
-                        panel.getGameWindow().getClient().send("PUT " + getFieldIndex(field));
+                        panel.getGameWindow().getClient().send("PUT " + getFieldIndex(field) + " " + field.getX() + " " + field.getY() + " " + field.getDiameter());
                     }
                 } else if (field.getPawn().getAccess(panel.getGameWindow().getClient().getColor()) && panel.getGameWindow().getClient().getTurn() && pawn == null) { //field.getPawn().getPawnState().getState().equals(PawnState.WAITING) &&
                     pawn = field.getPawn();
                     field.removePawn();
                     setLastField(field);
                     pawn.changePawnState();
-                    panel.getGameWindow().getClient().send("REMOVE " + getFieldIndex(field) + " " + field.getX() + " " + field.getY() + " " + field.getDiameter());
+                    panel.getGameWindow().getClient().send("REMOVE " + getFieldIndex(field) + " " + field.getX() + " " + field.getY() + " " + field.getDiameter() + " " + nextMove);
                 }
 
                 panel.repaint();
