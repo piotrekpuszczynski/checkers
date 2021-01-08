@@ -114,14 +114,4 @@ public class Client {
             socket.close();
         }
     }
-
-    /**
-     * @return sprawdza czy pionek ma mozliwosc zrobienia ruchu
-     */
-    public boolean checkAvailability() {
-        for (int i = 0; i < gameWindow.getBoard().getAllFields().size(); i++) {
-            if (gameWindow.getBoard().getAllFields().get(i).getAvailability()) return true;
-        }
-        return false;
-    }
 }
