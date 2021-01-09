@@ -2,6 +2,9 @@ package server.winning;
 
 import java.awt.*;
 
+/**
+ * wygrywanie dla trzech graczy
+ */
 public class WinForThree extends WinFactory {
     @Override
     public Color checkWholeBoard() {

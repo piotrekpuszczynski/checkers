@@ -2,6 +2,9 @@ package server.winning;
 
 import java.awt.*;
 
+/**
+ * wygrywanie dla dwoch graczy
+ */
 public class WinForTwo extends WinFactory {
 
     @Override
