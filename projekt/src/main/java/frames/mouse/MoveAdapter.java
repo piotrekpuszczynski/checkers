@@ -85,9 +85,8 @@ public class MoveAdapter extends MouseAdapter {
                     setLastField(field);
                     panel.getGameWindow().getClient().send("PUT " + getFieldIndex(field) + " " + field.getX() + " " + field.getY() + " " + field.getDiameter());
                     resetAvailability();
-                    //nextMove = false;
                 } else if (field.getPawn() == null) {
-                    if (pawn != null && pawn.getPawnState().getState().equals(pawn.getMovingState()) && field.getAvailability()) {
+                    if (pawn != null && pawn.getPawnState().getState().equals(pawn.getMovingState()) && field.getAvailability()) {//
                         pawn.changePawnState();
                         field.putPawn(pawn);
                         lastPawn = pawn;

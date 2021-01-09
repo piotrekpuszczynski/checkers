@@ -2,6 +2,7 @@ package server;
 
 import frames.GameWindow;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -104,6 +105,9 @@ public class Client {
 
                 } else if (response.startsWith("MOVESTATUS")) {
                     gameWindow.getBoard().getMouse().nextMove = true;
+                } else if (response.startsWith("VICTORY")) {
+                    JOptionPane.showMessageDialog(gameWindow, "Position: " + response.split(" ")[1]);
+                    System.exit(0);
                 }
                 gameWindow.getBoard().getMouse().panel.repaint();
             }
