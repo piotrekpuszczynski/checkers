@@ -1,6 +1,7 @@
 package server;
 
-import frames.GameWindow;
+import general.Facade;
+import general.GameWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +17,7 @@ public class Client {
     PrintWriter out;
     Socket socket;
     Color color;
-    GameWindow gameWindow;
+    private final Facade facade;
     private boolean turn = false;
 
     /**
@@ -24,6 +25,8 @@ public class Client {
      * @throws Exception wyjatek
      */
     public Client(String serverAddress) throws Exception {
+        facade = new Facade();
+        facade.setClient(this);
 
         socket = new Socket(serverAddress, 58989);
         in = new Scanner(socket.getInputStream());
@@ -34,7 +37,7 @@ public class Client {
         int pawnsAmount = Integer.parseInt(in.nextLine());
         color = new Color(Integer.parseInt(in.nextLine()), Integer.parseInt(in.nextLine()), Integer.parseInt(in.nextLine()));
 
-        gameWindow = new GameWindow(playersAmount, boardSize, pawnsAmount, this);
+        new GameWindow(playersAmount, boardSize, pawnsAmount, facade);
         play();
     }
 
@@ -63,53 +66,53 @@ public class Client {
                 String response = in.nextLine();
                 System.out.println(response);
                 if (response.startsWith("REMOVE")) {
-                    gameWindow.getBoard().getMouse().setPawn(gameWindow.getBoard().getMouse().getField(Integer.parseInt(response.split(" ")[1])).getPawn());
-                    gameWindow.getBoard().getMouse().getField(Integer.parseInt(response.split(" ")[1])).removePawn();
+                    facade.setPawn(facade.getFields().get(Integer.parseInt(response.split(" ")[1])).getPawn());
+                    facade.getFields().get(Integer.parseInt(response.split(" ")[1])).removePawn();
                 } else if (response.startsWith("PUT")) {
-                    gameWindow.getBoard().getMouse().getField(Integer.parseInt(response.split(" ")[1])).putPawn(gameWindow.getBoard().getMouse().getPawn());
-                    gameWindow.getBoard().getMouse().setPawn(null);
+                    facade.getFields().get(Integer.parseInt(response.split(" ")[1])).putPawn(facade.getPawn());
+                    facade.setPawn(null);
                 } else if (response.startsWith("MESSAGE")) {
-                    gameWindow.changeState(response);
+                    facade.getGameWindow().changeState(response);
                     if (response.split(" ")[1].equals("Your")) turn = true;
                     else if (response.split(" ")[1].equals("Waiting")) turn = false;
                 } else if (response.startsWith("SHOW")) {
-                    for (int i = 0; i < gameWindow.getBoard().getAllFields().size(); i++) {
-                        if (gameWindow.getBoard().getAllFields().get(i).getX() <= Integer.parseInt(response.split(" ")[1]) + 1 &&
-                                gameWindow.getBoard().getAllFields().get(i).getX() >= Integer.parseInt(response.split(" ")[1]) - 1 &&
-                                gameWindow.getBoard().getAllFields().get(i).getY() == Integer.parseInt(response.split(" ")[2])) {
-                            gameWindow.getBoard().getAllFields().get(i).setAvailabilityTrue();
-                            if (gameWindow.getBoard().getAllFields().get(i).getPawn() != null) {
-                                send("NEXT " + gameWindow.getBoard().getAllFields().get(i).getX() + " " + gameWindow.getBoard().getAllFields().get(i).getY());
+                    for (int i = 0; i < facade.getFields().size(); i++) {
+                        if (facade.getFields().get(i).getX() <= Integer.parseInt(response.split(" ")[1]) + 1 &&
+                                facade.getFields().get(i).getX() >= Integer.parseInt(response.split(" ")[1]) - 1 &&
+                                facade.getFields().get(i).getY() == Integer.parseInt(response.split(" ")[2])) {
+                            facade.getFields().get(i).setAvailabilityTrue();
+                            if (facade.getFields().get(i).getPawn() != null) {
+                                send("NEXT " + facade.getFields().get(i).getX() + " " + facade.getFields().get(i).getY());
                             }
                         }
                     }
                 } else if (response.startsWith("CHECK")) {
-                    for (int i = 0; i < gameWindow.getBoard().getAllFields().size(); i++) {
-                        if (gameWindow.getBoard().getAllFields().get(i).getX() <= Integer.parseInt(response.split(" ")[1]) + 1 &&
-                                gameWindow.getBoard().getAllFields().get(i).getX() >= Integer.parseInt(response.split(" ")[1]) - 1 &&
-                                gameWindow.getBoard().getAllFields().get(i).getY() == Integer.parseInt(response.split(" ")[2])) {
-                            if (gameWindow.getBoard().getAllFields().get(i).getPawn() != null) {
-                                send("NEXT " + gameWindow.getBoard().getAllFields().get(i).getX() + " " + gameWindow.getBoard().getAllFields().get(i).getY()
-                                        + " " + gameWindow.getBoard().getAllFields().get(i).getDiameter());
+                    for (int i = 0; i < facade.getFields().size(); i++) {
+                        if (facade.getFields().get(i).getX() <= Integer.parseInt(response.split(" ")[1]) + 1 &&
+                                facade.getFields().get(i).getX() >= Integer.parseInt(response.split(" ")[1]) - 1 &&
+                                facade.getFields().get(i).getY() == Integer.parseInt(response.split(" ")[2])) {
+                            if (facade.getFields().get(i).getPawn() != null) {
+                                send("NEXT " + facade.getFields().get(i).getX() + " " + facade.getFields().get(i).getY()
+                                        + " " + facade.getFields().get(i).getDiameter());
                             }
                         }
                     }
                 } else if (response.startsWith("NEXT")) {
-                    for (int i = 0; i < gameWindow.getBoard().getAllFields().size(); i++) {
-                        if (gameWindow.getBoard().getAllFields().get(i).getX() <= Integer.parseInt(response.split(" ")[1]) + 1 &&
-                                gameWindow.getBoard().getAllFields().get(i).getX() >= Integer.parseInt(response.split(" ")[1]) - 1 &&
-                                gameWindow.getBoard().getAllFields().get(i).getY() == Integer.parseInt(response.split(" ")[2])) {
-                            gameWindow.getBoard().getAllFields().get(i).setAvailabilityTrue();
+                    for (int i = 0; i < facade.getFields().size(); i++) {
+                        if (facade.getFields().get(i).getX() <= Integer.parseInt(response.split(" ")[1]) + 1 &&
+                                facade.getFields().get(i).getX() >= Integer.parseInt(response.split(" ")[1]) - 1 &&
+                                facade.getFields().get(i).getY() == Integer.parseInt(response.split(" ")[2])) {
+                            facade.getFields().get(i).setAvailabilityTrue();
                         }
                     }
 
                 } else if (response.startsWith("MOVESTATUS")) {
-                    gameWindow.getBoard().getMouse().nextMove = true;
+                    facade.getMouse().nextMove = true;
                 } else if (response.startsWith("VICTORY")) {
-                    JOptionPane.showMessageDialog(gameWindow, "Position: " + response.split(" ")[1]);
+                    JOptionPane.showMessageDialog(facade.getGameWindow(), "Position: " + response.split(" ")[1]);
                     System.exit(0);
                 }
-                gameWindow.getBoard().getMouse().panel.repaint();
+                facade.getBoardPanel().repaint();
             }
             out.println("QUIT");
         } catch (Exception e) {

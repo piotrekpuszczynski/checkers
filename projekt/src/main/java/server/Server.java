@@ -200,11 +200,6 @@ public class Server {
                             sendAvailableFields(Integer.parseInt(command.split(" ")[4]), "CHECK");
                         } else {
                             changePlayer = true;
-                            //currentPlayer.out.println("MESSAGE Waiting for opponent to move");
-                            //opponents.add(currentPlayer);
-                            //currentPlayer = opponents.get(0);
-                            //opponents.remove(0);
-                            //currentPlayer.out.println("MESSAGE Your move");
                         }
 
                         fields.get(Integer.parseInt(command.split(" ")[1])).putPawn(pawn);
@@ -223,16 +218,12 @@ public class Server {
 
                     Color won = winFactory.checkWholeBoard();
                     if (won != null) {
-                        //for (Player p: opponents) {
-                        //    if (won.equals(p.color)) {
-                                currentPlayer.out.println("VICTORY " + position);
-                                currentPlayer = opponents.get(0);
-                                opponents.remove(0);
-                                playersAmount--;
-                                currentPlayer.out.println("MESSAGE Your move");
-                                //opponents.remove(p);
-                            //}
-                        //}
+                        currentPlayer.out.println("VICTORY " + position);
+                        currentPlayer = opponents.get(0);
+                        opponents.remove(0);
+                        playersAmount--;
+                        currentPlayer.out.println("MESSAGE Your move");
+
                         position++;
                     } else if (changePlayer) {
                         currentPlayer.out.println("MESSAGE Waiting for opponent to move");

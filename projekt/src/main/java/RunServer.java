@@ -1,4 +1,4 @@
-import frames.*;
+import general.*;
 
 public class RunServer {
     public static void main(String[] args) {

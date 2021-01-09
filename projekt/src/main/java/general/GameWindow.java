@@ -1,6 +1,4 @@
-package frames;
-
-import server.Client;
+package general;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,21 +6,21 @@ import java.awt.event.ActionEvent;
 
 public class GameWindow extends JFrame {
     private final JLabel state;
-    private final Client client;
-    private final BoardPanel board;
+    private final Facade facade;
 
     /**
      * ustawia zawartosc okna gry
      * @param playersAmount liczba graczy
      * @param boardSize wielksoc planszy
      * @param pawnsAmount liczba pionkow
-     * @param client klient
      */
-    public GameWindow(String playersAmount, String boardSize, int pawnsAmount, Client client) {
+    public GameWindow(String playersAmount, String boardSize, int pawnsAmount, Facade facade) {
         super("Checkers");
-        this.client = client;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        facade.setGameWindow(this);
+        this.facade = facade;
 
         JMenuBar menuBar = new JMenuBar();
         JMenuItem exit = new JMenuItem("exit");
@@ -32,28 +30,18 @@ public class GameWindow extends JFrame {
         skipMove.addActionListener(this::skipMove);
         menuBar.add(skipMove);
         JMenuItem color = new JMenuItem("Your pawns' color");
-        color.setBackground(client.getColor());
+        color.setBackground(facade.getClient().getColor());
         menuBar.add(color);
         setJMenuBar(menuBar);
 
         state = new JLabel("MESSAGE Waiting for opponents");
         getContentPane().add(state, BorderLayout.SOUTH);
 
-        board = new BoardPanel(playersAmount, boardSize, pawnsAmount, this);
-        add(board);
+
+        add(new BoardPanel(playersAmount, boardSize, pawnsAmount, facade));
 
         setVisible(true);
     }
-
-    /**
-     * @return zwraca klienta
-     */
-    public Client getClient() { return this.client; }
-
-    /**
-     * @return zwraca panel
-     */
-    public BoardPanel getBoard() { return this.board; }
 
     /**
      * @param string zmienia stan dla klienta
@@ -64,18 +52,18 @@ public class GameWindow extends JFrame {
      * @param e pomijanie ruchu
      */
     public void skipMove(ActionEvent e) {
-        if (client.getTurn()) {
-            if (board.getMouse().getPawn() != null) {
-                board.getMouse().getLastField().putPawn(board.getMouse().getPawn());
-                board.getMouse().getPawn().changePawnState();
-                board.getMouse().setPawn(null);
-                board.getMouse().resetAvailability();
-                client.send("PUT " + board.getMouse().getFieldIndex(board.getMouse().getLastField()));
+        if (facade.getClient().getTurn()) {
+            if (facade.getPawn() != null) {
+                facade.getLastField().putPawn(facade.getPawn());
+                facade.getPawn().changePawnState();
+                facade.setPawn(null);
+                facade.resetAvailability();
+                facade.getClient().send("PUT " + facade.getFieldIndex(facade.getLastField()));
             } else {
-                board.getMouse().resetAvailability();
-                client.send("MESSAGE Your move");
+                facade.resetAvailability();
+                facade.getClient().send("MESSAGE Your move");
             }
-            board.getMouse().nextMove = false;
+            facade.getMouse().nextMove = false;
         }
     }
 

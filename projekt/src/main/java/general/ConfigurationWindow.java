@@ -1,4 +1,4 @@
-package frames;
+package general;
 
 import server.Server;
 
