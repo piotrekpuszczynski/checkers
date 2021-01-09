@@ -63,7 +63,7 @@ public class GameWindow extends JFrame {
                 facade.resetAvailability();
                 facade.getClient().send("MESSAGE Your move");
             }
-            facade.getMouse().nextMove = false;
+            facade.setNextMove(false);
         }
     }
 

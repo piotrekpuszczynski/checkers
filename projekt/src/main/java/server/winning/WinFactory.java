@@ -46,6 +46,20 @@ public abstract class WinFactory {
     }
 
     /**
+     * metoda sprawdza pole
+     * @param x wspolrzedna x
+     * @param y wspolrzedna y
+     */
+    private boolean getField(int x, int y) {
+        for (Field field: fields) {
+            if (field.getX() >= x - 1 && field.getX() <= x + 1 && field.getY() == y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * @param field wyznaczanie danych pierwszego pola do wstawienia do niego pionka
      */
     private void initializeData(Field field) {
@@ -198,4 +212,117 @@ public abstract class WinFactory {
      * @return zwraca czy ktos wygral
      */
     public abstract Color checkWholeBoard();
+
+
+    /**
+     * zwraca gorny promien
+     */
+    public List<Field> getUpper() {
+        List<Field> f = new ArrayList<>();
+        for (int i = 0; i < pawnsAmount; i++) {
+            f.add(fields.get(i));
+        }
+        return f;
+    }
+
+    /**
+     * zwraca dolny promien
+     */
+    public List<Field> getLower() {
+        List<Field> f = new ArrayList<>();
+        for (int i = fields.size() - pawnsAmount; i < fields.size(); i++) {
+            f.add(fields.get(i));
+        }
+        return f;
+    }
+
+    /**
+     * zwraca prawy dolny promien
+     */
+    public List<Field> getRightLower() {
+        List<Field> f = new ArrayList<>();
+
+        initializeData(fields.get(11 * (fields.size() - 1) / 12));
+
+        for (int i = 0; i < pawnsAmount; i++) {
+
+            if (getField(x, y)) f.add(fields.get(i));
+
+            incrementData();
+
+            x = firstX - (2 * gap - counter) * diameter / 2;
+            y = firstY - diameter * counter;
+        }
+        return f;
+    }
+
+    /**
+     * zwraca lewy gorny promien
+     */
+    public List<Field> getLeftUpper() {
+        List<Field> f = new ArrayList<>();
+
+        initializeData(fields.get((fields.size() - 1) / 12));
+
+        for (int i = 0; i < pawnsAmount; i++) {
+
+            if (getField(x, y)) f.add(fields.get(i));
+
+            incrementData();
+
+            x = firstX + (2 * gap - counter) * diameter / 2;
+            y = firstY + diameter * counter;
+        }
+        return f;
+    }
+
+    /**
+     * zwraca prawy gorny promien
+     */
+    public List<Field> getRightUpper() {
+        List<Field> f = new ArrayList<>();
+
+        calculateWidthInFields();
+
+        initializeData(fields.get((fields.size() - 1) / 12 + (3 * o)));
+
+        for (int i = 0; i < pawnsAmount; i++) {
+
+            if (getField(x, y)) f.add(fields.get(i));
+
+            incrementData();
+
+            x = firstX - (2 * gap - counter) * diameter / 2;
+            y = firstY + diameter * counter;
+        }
+        return f;
+    }
+
+    /**
+     * zwraca lewy dolny promien
+     */
+    public List<Field> getLeftLower() {
+        List<Field> f = new ArrayList<>();
+
+        calculateWidthInFields();
+
+        initializeData(fields.get((11 * (fields.size() - 1) / 12) - (3 * o)));
+
+        for (int i = 0; i < pawnsAmount; i++) {
+
+            if (getField(x, y)) f.add(fields.get(i));
+
+            incrementData();
+
+            x = firstX + (2 * gap - counter) * diameter / 2;
+            y = firstY - diameter * counter;
+        }
+        return f;
+    }
+
+    /**
+     * @param color kolor pionkow
+     * @return liste zwycieskich pol
+     */
+    public abstract List<Field> getWinningFields(Color color);
 }

@@ -1,6 +1,9 @@
 package server.winning;
 
+import layout.fields.Field;
+
 import java.awt.*;
+import java.util.List;
 
 /**
  * wygrywanie dla dwoch graczy
@@ -17,6 +20,13 @@ public class WinForTwo extends WinFactory {
             winners.add(Color.GREEN);
             return Color.GREEN;
         }
+        return null;
+    }
+
+    @Override
+    public List<Field> getWinningFields(Color color) {
+        if (color.equals(Color.GREEN)) return getLower();
+        if (color.equals(Color.RED)) return getUpper();
         return null;
     }
 }

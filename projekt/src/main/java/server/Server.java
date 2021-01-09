@@ -242,6 +242,10 @@ public class Server {
              */
             public void sendAvailableFields(int diameter, String command) {
 
+                x = startX;
+                y = startY;
+                currentPlayer.out.println(command + " " + x + " " + y);
+
                 x = startX - (diameter / 2);
                 y = startY - diameter;
                 currentPlayer.out.println(command + " " + x + " " + y);

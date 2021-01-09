@@ -1,12 +1,14 @@
 package general;
 
-import general.mouse.MoveAdapter;
 import layout.fields.Field;
 import layout.pawns.Pawn;
 import server.Client;
 
 import java.util.List;
 
+/**
+ * fasada zawierajaca informacje o polach i pionkach stojacyck oraz przesuwanych
+ */
 public class Facade {
     private List<Field> fields;
 
@@ -46,16 +48,6 @@ public class Facade {
 
     public BoardPanel getBoardPanel() {
         return boardPanel;
-    }
-
-    private MoveAdapter mouse;
-
-    public void setMouse(MoveAdapter mouse) {
-        this.mouse = mouse;
-    }
-
-    public MoveAdapter getMouse() {
-        return mouse;
     }
 
     private Field lastField;
@@ -101,5 +93,25 @@ public class Facade {
      */
     public void resetAvailability() {
         for (Field field: getFields()) field.setAvailabilityFalse();
+    }
+
+    private boolean nextMove = false;
+
+    public void setNextMove(boolean nextMove) {
+        this.nextMove = nextMove;
+    }
+
+    public boolean getNextMove() {
+        return nextMove;
+    }
+
+    private List<Field> winningFields;
+
+    public void setWinningFields(List<Field> winningFields) {
+        this.winningFields = winningFields;
+    }
+
+    public List<Field> getWinningFields() {
+        return winningFields;
     }
 }

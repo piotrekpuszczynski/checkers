@@ -11,14 +11,12 @@ import java.awt.event.MouseEvent;
  */
 public class MoveAdapter extends MouseAdapter {
     private final Facade facade;
-    public boolean nextMove = false;
 
     /**
      * konstruktor
      */
     public MoveAdapter(Facade facade) {
         this.facade = facade;
-        facade.setMouse(this);
     }
 
     /**
@@ -28,10 +26,10 @@ public class MoveAdapter extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
         for (Field field: facade.getFields()) {
             if (field.clicked(e.getX(), e.getY())) {
-                if (nextMove && field.getAvailability()) {
+                if (facade.getNextMove() && field.getAvailability()) {
                     field.putPawn(facade.getLastPawn());
                     facade.getLastField().removePawn();
-                    facade.getClient().send("REMOVE " + facade.getFieldIndex(facade.getLastField()) + " " + facade.getLastField().getX() + " " + facade.getLastField().getY() + " " + facade.getLastField().getDiameter() + " " + nextMove);
+                    facade.getClient().send("REMOVE " + facade.getFieldIndex(facade.getLastField()) + " " + facade.getLastField().getX() + " " + facade.getLastField().getY() + " " + facade.getLastField().getDiameter() + " " + facade.getNextMove());
                     facade.setLastField(field);
                     facade.getClient().send("PUT " + facade.getFieldIndex(field) + " " + field.getX() + " " + field.getY() + " " + field.getDiameter());
                     facade.resetAvailability();
@@ -50,7 +48,7 @@ public class MoveAdapter extends MouseAdapter {
                     field.removePawn();
                     facade.setLastField(field);
                     facade.getPawn().changePawnState();
-                    facade.getClient().send("REMOVE " + facade.getFieldIndex(field) + " " + field.getX() + " " + field.getY() + " " + field.getDiameter() + " " + nextMove);
+                    facade.getClient().send("REMOVE " + facade.getFieldIndex(field) + " " + field.getX() + " " + field.getY() + " " + field.getDiameter() + " " + facade.getNextMove());
                 }
 
                 facade.getBoardPanel().repaint();

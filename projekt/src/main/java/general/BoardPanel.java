@@ -5,6 +5,8 @@ import layout.fields.FieldsLayoutFactory;
 import layout.fields.LayoutProducer;
 import layout.pawns.PawnsPutterFactory;
 import layout.pawns.PawnsPutterProducer;
+import server.winning.WinFactory;
+import server.winning.WinProducer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +16,7 @@ import java.awt.*;
  */
 public class BoardPanel extends JPanel {
     private final FieldsLayoutFactory fieldsLayout;
+    private final PawnsPutterFactory pawnsPutter;
 
     /**
      * @param playersAmount liczba graczy
@@ -27,9 +30,14 @@ public class BoardPanel extends JPanel {
         fieldsLayout.initializeFields(getToolkit().getScreenSize().width, getToolkit().getScreenSize().height - 100);
         facade.setFields(fieldsLayout.getFields());
 
-        PawnsPutterFactory pawnsPutter = new PawnsPutterProducer().getPutter(playersAmount);
+        pawnsPutter = new PawnsPutterProducer().getPutter(playersAmount);
         pawnsPutter.setFields(facade.getFields());
         pawnsPutter.putPawns(pawnsAmount);
+
+        WinFactory winFactory = new WinProducer().getWin(playersAmount);
+        winFactory.setFields(fieldsLayout.getFields());
+        winFactory.setPawnsAmount(pawnsAmount);
+        facade.setWinningFields(winFactory.getWinningFields(facade.getClient().getColor()));
 
         addMouseListener(new MoveAdapter(facade));
     }

@@ -80,9 +80,15 @@ public class Client {
                         if (facade.getFields().get(i).getX() <= Integer.parseInt(response.split(" ")[1]) + 1 &&
                                 facade.getFields().get(i).getX() >= Integer.parseInt(response.split(" ")[1]) - 1 &&
                                 facade.getFields().get(i).getY() == Integer.parseInt(response.split(" ")[2])) {
-                            facade.getFields().get(i).setAvailabilityTrue();
-                            if (facade.getFields().get(i).getPawn() != null) {
-                                send("NEXT " + facade.getFields().get(i).getX() + " " + facade.getFields().get(i).getY());
+                            if (facade.getWinningFields().contains(facade.getLastField())) {
+                                if (facade.getWinningFields().contains(facade.getFields().get(i))) {
+                                    facade.getFields().get(i).setAvailabilityTrue();
+                                }
+                            } else {
+                                facade.getFields().get(i).setAvailabilityTrue();
+                                if (facade.getFields().get(i).getPawn() != null) {
+                                    send("NEXT " + facade.getFields().get(i).getX() + " " + facade.getFields().get(i).getY());
+                                }
                             }
                         }
                     }
@@ -107,7 +113,7 @@ public class Client {
                     }
 
                 } else if (response.startsWith("MOVESTATUS")) {
-                    facade.getMouse().nextMove = true;
+                    facade.setNextMove(true);
                 } else if (response.startsWith("VICTORY")) {
                     JOptionPane.showMessageDialog(facade.getGameWindow(), "Position: " + response.split(" ")[1]);
                     System.exit(0);

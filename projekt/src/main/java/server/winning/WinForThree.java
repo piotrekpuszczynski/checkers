@@ -1,6 +1,9 @@
 package server.winning;
 
+import layout.fields.Field;
+
 import java.awt.*;
+import java.util.List;
 
 /**
  * wygrywanie dla trzech graczy
@@ -20,6 +23,14 @@ public class WinForThree extends WinFactory {
             winners.add(Color.RED);
             return Color.RED;
         }
+        return null;
+    }
+
+    @Override
+    public List<Field> getWinningFields(Color color) {
+        if (color.equals(Color.GREEN)) return getLeftUpper();
+        if (color.equals(Color.RED)) return getRightUpper();
+        if (color.equals(Color.BLUE)) return getLower();
         return null;
     }
 }
