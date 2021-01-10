@@ -18,6 +18,9 @@ public abstract class WinFactory {
     int diameter;
     int counter, gap, x, y, o;
 
+    public List<Color> getWinners() {
+        return winners;
+    }
     /**
      * @param pawnsAmount ustawia ilosc pionkow
      */
@@ -50,13 +53,13 @@ public abstract class WinFactory {
      * @param x wspolrzedna x
      * @param y wspolrzedna y
      */
-    private boolean getField(int x, int y) {
+    private Field getField(int x, int y) {
         for (Field field: fields) {
             if (field.getX() >= x - 1 && field.getX() <= x + 1 && field.getY() == y) {
-                return true;
+                return field;
             }
         }
-        return false;
+        return null;
     }
 
     /**
@@ -230,7 +233,7 @@ public abstract class WinFactory {
      */
     public List<Field> getLower() {
         List<Field> f = new ArrayList<>();
-        for (int i = fields.size() - pawnsAmount; i < fields.size(); i++) {
+        for (int i = fields.size() - 1; i > fields.size() - pawnsAmount - 1; i--) {
             f.add(fields.get(i));
         }
         return f;
@@ -246,7 +249,7 @@ public abstract class WinFactory {
 
         for (int i = 0; i < pawnsAmount; i++) {
 
-            if (getField(x, y)) f.add(fields.get(i));
+            f.add(getField(x, y));
 
             incrementData();
 
@@ -266,7 +269,7 @@ public abstract class WinFactory {
 
         for (int i = 0; i < pawnsAmount; i++) {
 
-            if (getField(x, y)) f.add(fields.get(i));
+            f.add(getField(x, y));
 
             incrementData();
 
@@ -288,7 +291,7 @@ public abstract class WinFactory {
 
         for (int i = 0; i < pawnsAmount; i++) {
 
-            if (getField(x, y)) f.add(fields.get(i));
+            f.add(getField(x, y));
 
             incrementData();
 
@@ -310,7 +313,7 @@ public abstract class WinFactory {
 
         for (int i = 0; i < pawnsAmount; i++) {
 
-            if (getField(x, y)) f.add(fields.get(i));
+            f.add(getField(x, y));
 
             incrementData();
 
@@ -325,4 +328,9 @@ public abstract class WinFactory {
      * @return liste zwycieskich pol
      */
     public abstract List<Field> getWinningFields(Color color);
+
+    /**
+     * @param g rysuje koncowe trojkaty dla poszczegolych kolorow
+     */
+    //public abstract void drawDestinationTriangle(Graphics g);
 }

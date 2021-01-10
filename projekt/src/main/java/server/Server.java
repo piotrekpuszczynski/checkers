@@ -62,7 +62,8 @@ public class Server {
         Player currentPlayer;
         ArrayList<Player> opponents = new ArrayList<>();
         ArrayList<Player> tempOpponents = new ArrayList<>();
-        private final Color[] colors = {Color.GREEN, Color.RED, Color.BLUE, Color.YELLOW, Color.CYAN, Color.MAGENTA};
+        private final Color[] colors = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.CYAN, Color.MAGENTA};
+        boolean flag = false;
         int position = 1;
         boolean changePlayer = false;
         final int random;
@@ -91,14 +92,13 @@ public class Server {
          */
         private class Player implements Runnable {
             private final Socket socket;
-            private int playersAmount;
+            private final int playersAmount;
             private final String boardSize;
             private final int pawnsAmount;
             Scanner in;
             PrintWriter out;
             private final Color color;
             int startX = 0, startY = 0, x, y, lastX, lastY;
-            boolean flag = false;
 
             /**
              * @param socket polaczenie z serwerem
@@ -157,12 +157,13 @@ public class Server {
                 else if (flag) opponents.add(this);
                 else tempOpponents.add(this);
 
-                if (opponents.size() + tempOpponents.size() == playersAmount - 1 && currentPlayer != null) {
+                if (opponents.size() + tempOpponents.size() + 1 == playersAmount && currentPlayer != null) {
                     opponents.addAll(tempOpponents);
                     currentPlayer.out.println("MESSAGE Your move");
                 }
                 else {
                     for (Player o: opponents) o.out.println("MESSAGE Waiting for opponents to connect");
+                    for (Player o: tempOpponents) o.out.println("MESSAGE Waiting for opponents to connect");
                     if (currentPlayer != null) currentPlayer.out.println("MESSAGE Waiting for opponents to connect");
                 }
             }
@@ -216,15 +217,16 @@ public class Server {
                         currentPlayer.out.println("NEXT " + lastX + " " + lastY);
                     }
 
-                    Color won = winFactory.checkWholeBoard();
-                    if (won != null) {
+                    if (winFactory.checkWholeBoard() != null) {
                         currentPlayer.out.println("VICTORY " + position);
                         currentPlayer = opponents.get(0);
                         opponents.remove(0);
-                        playersAmount--;
                         currentPlayer.out.println("MESSAGE Your move");
+                        changePlayer = false;
 
                         position++;
+
+                        if (opponents.size() == 0) currentPlayer.out.println("VICTORY " + position);
                     } else if (changePlayer) {
                         currentPlayer.out.println("MESSAGE Waiting for opponent to move");
                         opponents.add(currentPlayer);
@@ -233,6 +235,7 @@ public class Server {
                         currentPlayer.out.println("MESSAGE Your move");
                         changePlayer = false;
                     }
+
                 }
             }
 

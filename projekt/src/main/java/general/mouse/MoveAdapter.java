@@ -34,7 +34,7 @@ public class MoveAdapter extends MouseAdapter {
                     facade.getClient().send("PUT " + facade.getFieldIndex(field) + " " + field.getX() + " " + field.getY() + " " + field.getDiameter());
                     facade.resetAvailability();
                 } else if (field.getPawn() == null) {
-                    if (facade.getPawn() != null && facade.getPawn().getPawnState().getState().equals(facade.getPawn().getMovingState()) && field.getAvailability()) {
+                    if (facade.getPawn() != null && facade.getPawn().getPawnState().getState().equals(facade.getPawn().getMovingState()) && field.getAvailability()) {// && field.getAvailability()
                         facade.getPawn().changePawnState();
                         field.putPawn(facade.getPawn());
                         facade.setLastPawn(facade.getPawn());
