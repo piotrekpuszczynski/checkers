@@ -18,9 +18,6 @@ public abstract class WinFactory {
     int diameter;
     int counter, gap, x, y, o;
 
-    public List<Color> getWinners() {
-        return winners;
-    }
     /**
      * @param pawnsAmount ustawia ilosc pionkow
      */
@@ -332,5 +329,4 @@ public abstract class WinFactory {
     /**
      * @param g rysuje koncowe trojkaty dla poszczegolych kolorow
      */
-    //public abstract void drawDestinationTriangle(Graphics g);
 }

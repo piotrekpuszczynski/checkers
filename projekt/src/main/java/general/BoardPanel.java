@@ -16,7 +16,6 @@ import java.awt.*;
  */
 public class BoardPanel extends JPanel {
     private final FieldsLayoutFactory fieldsLayout;
-    private final PawnsPutterFactory pawnsPutter;
 
     /**
      * @param playersAmount liczba graczy
@@ -30,7 +29,7 @@ public class BoardPanel extends JPanel {
         fieldsLayout.initializeFields(getToolkit().getScreenSize().width, getToolkit().getScreenSize().height - 100);
         facade.setFields(fieldsLayout.getFields());
 
-        pawnsPutter = new PawnsPutterProducer().getPutter(playersAmount);
+        PawnsPutterFactory pawnsPutter = new PawnsPutterProducer().getPutter(playersAmount);
         pawnsPutter.setFields(facade.getFields());
         pawnsPutter.putPawns(pawnsAmount);
 
