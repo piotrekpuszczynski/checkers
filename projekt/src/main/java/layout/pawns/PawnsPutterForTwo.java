@@ -12,4 +12,10 @@ public class PawnsPutterForTwo extends PawnsPutterFactory {
         putUpper(Color.GREEN, pawnsAmount);
         putLower(Color.RED, pawnsAmount);
     }
+
+    @Override
+    public void drawDestination(Graphics g, int pawnsAmount) {
+        drawLower(Color.GREEN, pawnsAmount);
+        drawUpper(Color.RED, pawnsAmount);
+    }
 }

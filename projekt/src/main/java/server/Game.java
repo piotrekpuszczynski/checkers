@@ -54,7 +54,7 @@ class Game {
     /**
      * gracz
      */
-    protected class Player implements Runnable {
+    class Player implements Runnable {
         private final Socket socket;
         private final int playersAmount;
         private final String boardSize;

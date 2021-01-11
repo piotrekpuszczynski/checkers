@@ -13,4 +13,11 @@ public class PawnsPutterForThree extends PawnsPutterFactory {
         putRightLower(Color.GREEN, pawnsAmount);
         putLeftLower(Color.RED, pawnsAmount);
     }
+
+    @Override
+    public void drawDestination(Graphics g, int pawnsAmount) {
+        drawLower(Color.BLUE, pawnsAmount);
+        drawLeftUpper(Color.GREEN, pawnsAmount);
+        drawRightUpper(Color.RED, pawnsAmount);
+    }
 }

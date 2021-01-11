@@ -17,7 +17,7 @@ public class Server {
      * @param pawnsAmount liczba pionkow
      * @throws IOException wyjatek
      */
-    public void runServer(String playersAmount, String boardSize, int pawnsAmount) throws IOException {
+    public void runServer(String playersAmount, String boardSize, int pawnsAmount, boolean changePawnRule) throws IOException {
         try (var listener = new ServerSocket(58989)) {
             System.out.println("Server is Running...");
             var pool = Executors.newFixedThreadPool(Integer.parseInt(playersAmount));

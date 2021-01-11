@@ -5,6 +5,7 @@ import server.Server;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -24,7 +25,7 @@ public class ConfigurationWindow extends JFrame {
     public ConfigurationWindow() {
         super("Selection");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(getToolkit().getScreenSize().width/3, getToolkit().getScreenSize().height/3);
+        setSize(getToolkit().getScreenSize().width / 3, getToolkit().getScreenSize().height / 3);
         setLayout(new GridLayout(4, 2));
 
         String[] amount = {"2", "3", "4", "6"};
@@ -45,6 +46,10 @@ public class ConfigurationWindow extends JFrame {
 
         add(new JLabel("Select amount of pawns: "));
         add(pawnsAmount);
+
+        JCheckBox blockingPawn = new JCheckBox(" Change blocking pawn rule");
+        blockingPawn.addItemListener(this::getChangingPawnRule);
+        add(blockingPawn);
 
         Button ok = new Button("OK");
         ok.addActionListener(this::ok);
@@ -78,12 +83,16 @@ public class ConfigurationWindow extends JFrame {
     public void ok(ActionEvent e) {
         setVisible(false);
         try {
-            new Server().runServer(getPlayersAmount(), getBoardSize(), getPawnsAmount());
+            new Server().runServer(getPlayersAmount(), getBoardSize(), getPawnsAmount(), changingPawnRule);
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
     }
 
+    boolean changingPawnRule;
+    public void getChangingPawnRule(ItemEvent e) {
+        changingPawnRule = e.getStateChange() == ItemEvent.SELECTED;
+    }
     /**
      * @return zwraca wybtana liczbe graczy
      */

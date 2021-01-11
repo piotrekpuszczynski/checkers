@@ -123,4 +123,9 @@ public class Field {
         this.diameter = diameter;
     }
 
+    public void drawDestination(Color color) {
+        g.setColor(color);
+        g.drawOval(x, y, diameter, diameter);
+    }
+
 }

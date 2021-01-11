@@ -51,6 +51,18 @@ public abstract class PawnsPutterFactory {
     }
 
     /**
+     * metoda rysujaca docelowe pole
+     * @param x wspolrzedna x
+     * @param y wspolrzedna y
+     * @param color kolr ponka
+     */
+    private void draw(int x, int y, Color color) {
+        for (Field field: fields) {
+            if (field.getX() >= x - 1 && field.getX() <= x + 1 && field.getY() == y) field.drawDestination(color);
+        }
+    }
+
+    /**
      * @param field wyznaczanie danych pierwszego pola do wstawienia do niego pionka
      */
     private void initializeData(Field field) {
@@ -188,4 +200,108 @@ public abstract class PawnsPutterFactory {
             y = firstY - diameter * counter;
         }
     }
+
+    /**
+     * wstawia pionki na gorny promien
+     * @param color kolor pionkow
+     * @param pawnsAmount ilosc pionkow
+     */
+    public void drawUpper(Color color, int pawnsAmount) {
+        for (int i = 0; i < pawnsAmount; i++) fields.get(i).drawDestination(color);
+    }
+
+    /**
+     * wstawia pionki na dolny promien
+     * @param color kolor pionkow
+     * @param pawnsAmount ilosc pionkow
+     */
+    public void drawLower(Color color, int pawnsAmount) {
+        for (int i = fields.size() - pawnsAmount; i < fields.size(); i++) fields.get(i).drawDestination(color);
+    }
+
+    /**
+     * wstawia pionki na prawy dolny promien
+     * @param color kolor pionkow
+     * @param pawnsAmount ilosc pionkow
+     */
+    public void drawRightLower(Color color, int pawnsAmount) {
+
+        initializeData(fields.get(11 * (fields.size() - 1) / 12));
+
+        for (int i = 0; i < pawnsAmount; i++) {
+
+            draw(x, y, color);
+
+            incrementData();
+
+            x = firstX - (2 * gap - counter) * diameter / 2;
+            y = firstY - diameter * counter;
+        }
+    }
+
+    /**
+     * wstawia pionki na lewy gorny promien
+     * @param color kolor pionkow
+     * @param pawnsAmount ilosc pionkow
+     */
+    public void drawLeftUpper(Color color, int pawnsAmount) {
+
+        initializeData(fields.get((fields.size() - 1) / 12));
+
+        for (int i = 0; i < pawnsAmount; i++) {
+
+            draw(x, y, color);
+
+            incrementData();
+
+            x = firstX + (2 * gap - counter) * diameter / 2;
+            y = firstY + diameter * counter;
+        }
+    }
+
+    /**
+     * wstawia pionki na prawy gorny promien
+     * @param color kolor pionkow
+     * @param pawnsAmount ilosc pionkow
+     */
+    public void drawRightUpper(Color color, int pawnsAmount) {
+
+        calculateWidthInFields();
+
+        initializeData(fields.get((fields.size() - 1) / 12 + (3 * o)));
+
+        for (int i = 0; i < pawnsAmount; i++) {
+
+            draw(x, y, color);
+
+            incrementData();
+
+            x = firstX - (2 * gap - counter) * diameter / 2;
+            y = firstY + diameter * counter;
+        }
+    }
+
+    /**
+     * wstawia pionki na lewy dolny promien
+     * @param color kolor pionkow
+     * @param pawnsAmount ilosc pionkow
+     */
+    public void drawLeftLower(Color color, int pawnsAmount) {
+
+        calculateWidthInFields();
+
+        initializeData(fields.get((11 * (fields.size() - 1) / 12) - (3 * o)));
+
+        for (int i = 0; i < pawnsAmount; i++) {
+
+            draw(x, y, color);
+
+            incrementData();
+
+            x = firstX + (2 * gap - counter) * diameter / 2;
+            y = firstY - diameter * counter;
+        }
+    }
+
+    public abstract void drawDestination(Graphics g, int pawnsAmount);
 }
